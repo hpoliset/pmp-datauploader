@@ -20,8 +20,10 @@ import org.srcm.pmp.domain.Coordinator;
 import org.srcm.pmp.domain.Institute;
 import org.srcm.pmp.domain.Maturity;
 import org.srcm.pmp.domain.Membership;
+import org.srcm.pmp.domain.Program;
 import org.srcm.pmp.domain.Seeker;
 import org.srcm.pmp.domain.SeekerAim;
+import org.srcm.pmp.domain.SeekerAims;
 import org.srcm.pmp.domain.SeekerAimsCols;
 import org.srcm.pmp.domain.UploadFile;
 import org.srcm.pmp.fileupload.dao.FileUploadDAO;
@@ -46,7 +48,7 @@ public class ApplicationContextConfig {
     	dataSource.setDriverClassName("com.mysql.jdbc.Driver");
     	dataSource.setUrl("jdbc:mysql://localhost:3306/pmp_dev");
     	dataSource.setUsername("root");
-    	dataSource.setPassword("master");
+    	dataSource.setPassword("root");
     	
     	return dataSource;
     }
@@ -65,7 +67,7 @@ public class ApplicationContextConfig {
     	LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(dataSource);
     	sessionBuilder.addProperties(getHibernateProperties());
     	sessionBuilder.addAnnotatedClasses(UploadFile.class,Seeker.class,SeekerAimsCols.class,Membership.class,
-    			Coordinator.class,Institute.class,Maturity.class,Channel.class,SeekerAim.class);
+    			Coordinator.class,Institute.class,Maturity.class,Channel.class,SeekerAim.class,SeekerAims.class,Program.class);
     	
     	return sessionBuilder.buildSessionFactory();
     }

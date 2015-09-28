@@ -6,7 +6,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.srcm.pmp.domain.Program;
 import org.srcm.pmp.domain.SeekerAim;
+import org.srcm.pmp.domain.SeekerAims;
 
 @Repository
 public class SeekerDAOImpl implements SeekerDAO{
@@ -15,9 +17,15 @@ public class SeekerDAOImpl implements SeekerDAO{
 	public SeekerDAOImpl(){
 	}
 	@Override
-	public void saveOrUpdate(SeekerAim seeker) {
+	public void saveOrUpdate(Program program) {
 		Session currentSession = sessionFactory.getCurrentSession();
-		currentSession.saveOrUpdate(seeker);
+		currentSession.saveOrUpdate(program);
+	}
+	
+	@Override
+	public void saveOrUpdate(SeekerAims aims) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		currentSession.saveOrUpdate(aims);
 	}
 
 	@Override

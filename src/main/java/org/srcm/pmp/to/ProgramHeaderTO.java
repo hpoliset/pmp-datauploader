@@ -1,6 +1,8 @@
 package org.srcm.pmp.to;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author MASTER
@@ -14,7 +16,7 @@ public class ProgramHeaderTO implements Serializable {
 	private String channelName;
 	 private String instituteName;
 	  private String website;
-	  private String programStartDate;
+	  private Date programStartDate;
 	  private String programRawStartDate;
 	  /**
 	 * @return the programRawStartDate
@@ -32,6 +34,7 @@ public class ProgramHeaderTO implements Serializable {
 	  private String coordinatorName;
 	  private String email;
 	  private String center;
+	  private List<SeekerAimsTO> seekerAimsTo;
 	/**
 	 * @return the channelName
 	 */
@@ -71,13 +74,13 @@ public class ProgramHeaderTO implements Serializable {
 	/**
 	 * @return the programStartDate
 	 */
-	public String getProgramStartDate() {
+	public Date getProgramStartDate() {
 		return programStartDate;
 	}
 	/**
 	 * @param programStartDate the programStartDate to set
 	 */
-	public void setProgramStartDate(String programStartDate) {
+	public void setProgramStartDate(Date programStartDate) {
 		this.programStartDate = programStartDate;
 	}
 	/**
@@ -133,6 +136,20 @@ public class ProgramHeaderTO implements Serializable {
 	 */
 	public void setCenter(String center) {
 		this.center = center;
+	}
+	
+	
+	/**
+	 * @return the seekerAimsTo
+	 */
+	public List<SeekerAimsTO> getSeekerAimsTo() {
+		return seekerAimsTo;
+	}
+	/**
+	 * @param seekerAimsTo the seekerAimsTo to set
+	 */
+	public void setSeekerAimsTo(List<SeekerAimsTO> seekerAimsTo) {
+		this.seekerAimsTo = seekerAimsTo;
 	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()

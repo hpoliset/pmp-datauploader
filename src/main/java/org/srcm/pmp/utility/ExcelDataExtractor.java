@@ -34,8 +34,8 @@ public class ExcelDataExtractor {
 	private SimpleDateFormat dateFormat = new SimpleDateFormat(DD_MMM_YYYY);
 
 	public static enum PARTICIPANT_COLS {
-		NAME(0), GENDER(1), DOB(2), ADDR(3), CITY(4), STATE(5), EMAIL(6), PHONE(
-				7), INTRODUCED(8), INTR_DATE(9), INTR_BY(10);
+		NAME(0), GENDER(1), DOB(2), ADDR(3), CITY(4), STATE(5), EMAIL(6), PHONE(7), INTRODUCED(8), INTR_DATE(
+				9), INTR_BY(10);
 		private int col;
 
 		private PARTICIPANT_COLS(int col) {
@@ -51,8 +51,8 @@ public class ExcelDataExtractor {
 	}
 
 	public static enum HEADER_ROWS {
-		PROGRAM_NAME(2), CO_NAME(3), CO_EMAIL(4), CO_CENTER(5), CO_COUNTRY(6), CO_INSTNAME(
-				7), CO_WEB_SITE(8), CO_DATE(9);
+		PROGRAM_NAME(2), CO_NAME(3), CO_EMAIL(4), CO_CENTER(5), CO_COUNTRY(6), CO_INSTNAME(7), CO_WEB_SITE(8), CO_DATE(
+				9);
 		int cellVal;
 
 		private HEADER_ROWS(int i) {
@@ -75,8 +75,7 @@ public class ExcelDataExtractor {
 
 	}
 
-	private static Logger sLogger = LoggerFactory
-			.getLogger(ExcelDataExtractor.class.getName());
+	private static Logger sLogger = LoggerFactory.getLogger(ExcelDataExtractor.class.getName());
 	Workbook workbook;
 	Sheet sheet;
 
@@ -145,18 +144,15 @@ public class ExcelDataExtractor {
 					participantRows.add(row);
 				}
 			}
-			if (row != null
-					&& row.getCell(PARTICIPANT_COLS.DOB.getCol()) != null) {
-				String string = row.getCell(PARTICIPANT_COLS.DOB.getCol())
-						.toString();
+			if (row != null && row.getCell(PARTICIPANT_COLS.DOB.getCol()) != null) {
+				String string = row.getCell(PARTICIPANT_COLS.DOB.getCol()).toString();
 				if (string.contains(DATE_OF_BIRTH)) {
 					mark = true;
 				}
 
 				if (mark) {
-					if (row == null
-							|| (row.getCell(PARTICIPANT_COLS.NAME.getCol()) == null)||
-							row.getCell(PARTICIPANT_COLS.NAME.getCol()).toString().isEmpty()) {
+					if (row == null || (row.getCell(PARTICIPANT_COLS.NAME.getCol()) == null)
+							|| row.getCell(PARTICIPANT_COLS.NAME.getCol()).toString().isEmpty()) {
 						mark = false;
 					}
 				}
@@ -247,13 +243,15 @@ public class ExcelDataExtractor {
 	 * @param codateRow
 	 */
 	private void populateStartDate(ProgramHeaderTO header, Row codateRow) {
-		String string = codateRow.getCell(2).toString();
-		SimpleDateFormat format = new SimpleDateFormat(DD_MMM_YYYY);
-		try {
-			format.parse(string);
-			header.setProgramStartDate(string);
-		} catch (ParseException e) {
-			header.setProgramRawStartDate(string);
+		if (codateRow.getCell(2) != null) {
+			String string = codateRow.getCell(2).toString();
+			SimpleDateFormat format = new SimpleDateFormat(DD_MMM_YYYY);
+			try {
+				Date date = format.parse(string);
+				header.setProgramStartDate(date);
+			} catch (ParseException e) {
+				header.setProgramRawStartDate(string);
+			}
 		}
 
 	}
@@ -278,8 +276,7 @@ public class ExcelDataExtractor {
 	 * @param header
 	 * @param nameRow
 	 */
-	private void populateCoordinatorNameAndEmail(ProgramHeaderTO header,
-			Row nameRow) {
+	private void populateCoordinatorNameAndEmail(ProgramHeaderTO header, Row nameRow) {
 		String coName = nameRow.getCell(2).getStringCellValue();
 		if (coName.indexOf("@") > 0) {
 			String[] splitData = coName.split(",");
@@ -295,8 +292,7 @@ public class ExcelDataExtractor {
 		}
 	}
 
-	private void fillNameAndEmail(ProgramHeaderTO header, String coName,
-			String[] splitData) {
+	private void fillNameAndEmail(ProgramHeaderTO header, String coName, String[] splitData) {
 		String email = splitData[splitData.length - 1];
 		header.setEmail(email);
 		String coordName = coName.substring(0, coName.indexOf(email));
@@ -328,8 +324,7 @@ public class ExcelDataExtractor {
 				System.exit(0);
 			}
 			ProgramHeaderTO buildHeader = transformer.buildProgramDetails();
-			List<SeekerAimsTO> buildParticipants = transformer
-					.buildParticipants();
+			List<SeekerAimsTO> buildParticipants = transformer.buildParticipants();
 			System.out.println(buildHeader);
 			System.out.println(buildParticipants);
 		} catch (IOException e) {

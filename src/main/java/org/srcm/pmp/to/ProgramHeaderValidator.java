@@ -211,12 +211,12 @@ public class ProgramHeaderValidator implements Serializable {
 			errList.add("Country is Mandatory");
 		}
 		if (headerTO.getProgramStartDate() == null
-				|| headerTO.getProgramStartDate().isEmpty()) {
+				) {
 			errList.add("ProgramStartDate is Mandatory");
 		} else {
 			SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy");
 			try {
-				format.parse(headerTO.getProgramStartDate());
+				format.parse(headerTO.getProgramStartDate().toString());
 			} catch (ParseException e) {
 				errList.add("ProgramStartDate is invalid date format:dd/MM/yyyy");
 			}

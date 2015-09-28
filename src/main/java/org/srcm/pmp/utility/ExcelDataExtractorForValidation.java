@@ -97,7 +97,8 @@ public class ExcelDataExtractorForValidation {
 		header.setEmail(validateNull(emailRow.getCell(2)));
 		header.setInstituteName(validateNull(instRow.getCell(2)));
 		header.setWebsite(validateNull(websiteRow.getCell(2)));
-		header.setProgramStartDate(validateDateNull(codateRow.getCell(2)));
+		//header.setProgramStartDate(validateDateNull(codateRow.getCell(2)));
+		header.setProgramStartDate(null);
 
 		validator.setProgramName(validateNull(programRow.getCell(0)));
 		validator.setCenter(validateNull(centerRow.getCell(0)));

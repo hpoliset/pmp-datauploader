@@ -17,7 +17,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.srcm.pmp.to.ProgramHeaderTO;
 import org.srcm.pmp.to.ProgramHeaderValidator;
 
@@ -26,6 +25,8 @@ import org.srcm.pmp.to.ProgramHeaderValidator;
  *
  */
 public class ExcelDataExtractorForValidation {
+
+	private static final String PROGRAM_NAME = "Program Name";
 
 	public enum Rows {
 		PROGRAM_NAME(3), CO_NAME(4), CO_EMAIL(5), CO_CENTER(6), CO_COUNTRY(7), CO_INSTNAME(
@@ -50,7 +51,6 @@ public class ExcelDataExtractorForValidation {
 
 	private static Logger sLogger = LoggerFactory
 			.getLogger(ExcelDataExtractorForValidation.class.getName());
-	private CommonsMultipartFile aFile;
 	Workbook workbook;
 	Sheet sheet;
 
@@ -73,22 +73,32 @@ public class ExcelDataExtractorForValidation {
 		}
 	}
 
-	public ExcelDataExtractorForValidation(CommonsMultipartFile uploadFile) {
-		this.aFile = uploadFile;
-	}
 
 	public List<Object> buildHeader() {
 		List<Object> data = new ArrayList<Object>();
 		ProgramHeaderTO header = new ProgramHeaderTO();
 		ProgramHeaderValidator validator = new ProgramHeaderValidator();
-		Row programRow = sheet.getRow(Rows.PROGRAM_NAME.getRowVal());
-		Row nameRow = sheet.getRow(Rows.CO_NAME.getRowVal());
-		Row centerRow = sheet.getRow(Rows.CO_CENTER.getRowVal());
-		Row countryRow = sheet.getRow(Rows.CO_COUNTRY.getRowVal());
-		Row emailRow = sheet.getRow(Rows.CO_EMAIL.getRowVal());
-		Row instRow = sheet.getRow(Rows.CO_INSTNAME.getRowVal());
-		Row websiteRow = sheet.getRow(Rows.CO_WEB_SITE.getRowVal());
-		Row codateRow = sheet.getRow(Rows.CO_DATE.getRowVal());
+		int rowVal = 0;
+		for(int cnt=0;cnt < sheet.getPhysicalNumberOfRows();cnt++){
+			Row row = sheet.getRow(cnt);
+			if(row.getCell(0)!=null){
+				String val = row.getCell(0).toString();
+				if(val.contains(PROGRAM_NAME)){
+					rowVal = cnt;
+					break;
+				}
+			}
+		}
+		
+		
+		Row programRow = sheet.getRow(rowVal);
+		Row nameRow = sheet.getRow(rowVal+1);
+		Row centerRow = sheet.getRow(rowVal+3);
+		Row countryRow = sheet.getRow(rowVal+4);
+		Row emailRow = sheet.getRow(rowVal+2);
+		Row instRow = sheet.getRow(rowVal+5);
+		Row websiteRow = sheet.getRow(rowVal+6);
+		Row codateRow = sheet.getRow(rowVal+7);
 
 		header.setChannelName(validateNull(programRow.getCell(2)));
 		header.setCenter(validateNull(centerRow.getCell(2)));

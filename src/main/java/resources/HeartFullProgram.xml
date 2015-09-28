@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<workbook>
+	<worksheet name="Sheet1">
+		<section startRow="1" endRow="3" />
+		<section startRow="4" endRow="4">
+			<mapping cell="C4">channel.channelName</mapping>
+		</section>
+		<section startRow="5" endRow="8">
+			<mapping row="5" col="2">coordinator.coordinatorName</mapping>
+			<mapping row="6" col="2">coordinator.emailId</mapping>
+			<mapping row="7" col="2">coordinator.center</mapping>
+			<mapping row="8" col="2">coordinator.country</mapping>
+		</section>
+		<section startRow="9" endRow="10">
+			<mapping row="9" col="2">institute.instituteName</mapping>
+			<mapping row="10" col="2">institute.website</mapping>
+		</section>
+		<section startRow="11" endRow="11">
+			<mapping row="11" col="2">member.programStartDate</mapping>
+			<!-- <mapping row="11" col="4">member.programEndDate</mapping> -->
+		</section>
+		<section startRow="9" endRow="14" />
+		<loop startRow="15" endRow="2000" items="participants" var="participant"
+			varType="org.srcm.pmp.to.ParticipantTO">
+			<section startRow="15" endRow="15">
+				<mapping row="15" col="0">participant.name</mapping>
+				<mapping row="15" col="1">participant.gender</mapping>
+				<mapping row="15" col="2">participant.dateOfBirth</mapping>
+				<mapping row="15" col="3">participant.permAddress</mapping>
+				<mapping row="15" col="4">participant.city</mapping>
+				<mapping row="15" col="5">participant.state</mapping>
+				<mapping row="15" col="6">participant.email</mapping>
+				<mapping row="15" col="7">participant.phoneNumber</mapping>
+				<mapping row="15" col="8">participant.introduced</mapping>
+				<mapping row="15" col="9">participant.introdutionDate</mapping>
+				<mapping row="15" col="10">participant.introducedBy</mapping>
+			</section>
+			<loopbreakcondition>
+				<rowcheck offset="0">
+					<cellcheck offset="0" />
+				</rowcheck>
+			</loopbreakcondition>
+		</loop>
+	</worksheet>
+</workbook>

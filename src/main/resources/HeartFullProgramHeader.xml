@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<workbook>
+	<worksheet name="Sheet1">
+		<section startRow="1" endRow="3" />
+		<section startRow="4" endRow="4">
+			<mapping cell="C4">header.channelName</mapping>
+			<mapping cell="A4">validator.programName</mapping>
+		</section>
+		<section startRow="5" endRow="8">
+		<!-- 	<mapping row="5" col="0">validator.coordinatorName</mapping>
+			<mapping row="6" col="0">validator.email</mapping>
+			<mapping row="7" col="0">validator.center</mapping>
+			<mapping row="8" col="0">validator.country</mapping> -->
+			<mapping row="5" col="2">header.coordinatorName</mapping>
+			<mapping row="6" col="2">header.email</mapping>
+			<mapping row="7" col="2">header.center</mapping>
+			<mapping row="8" col="2">header.country</mapping>
+		</section>
+		<!-- <section startRow="9" endRow="10">
+			<mapping row="9" col="0">validator.instituteName</mapping>
+			<mapping row="10" col="0">validator.website</mapping>
+			<mapping row="9" col="2">header.instituteName</mapping>
+			<mapping row="10" col="2">header.website</mapping>
+		</section> -->
+		<section startRow="11" endRow="11">
+			<mapping row="9" col="2">header.programStartDate</mapping>
+			<mapping row="9" col="0">validator.programStartDate</mapping>
+		</section>
+	</worksheet>
+</workbook>

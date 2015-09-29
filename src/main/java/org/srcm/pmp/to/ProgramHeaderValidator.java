@@ -137,7 +137,9 @@ public class ProgramHeaderValidator implements Serializable {
 	 *            the datesOfProgram to set
 	 */
 	public void setDatesOfProgram(String datesOfProgram) {
+
 		this.datesOfProgram = datesOfProgram;
+		System.out.println("Date set to " + this.datesOfProgram);
 	}
 
 	/**

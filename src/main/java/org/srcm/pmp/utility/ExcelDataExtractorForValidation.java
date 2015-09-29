@@ -147,15 +147,28 @@ public class ExcelDataExtractorForValidation {
 
 	public static void main(String[] args) {
 		if(args[0]==null){
-			sLogger.info("Please provide Input file name.");
+			sLogger.error("Please provide Input file name.");
 		}
+		StringBuffer loggerMessage = new StringBuffer();
+		boolean isValid = validateHeartfulnessExcelFile(args[0], loggerMessage);
+		if(!isValid) {
+			System.exit(-1);
+		}
+		System.exit(0);
+	}
+
+	public static boolean validateHeartfulnessExcelFile(String arg, StringBuffer loggerMessage) {
+
 		FileInputStream fs;
 		try {
-			String fileName =args[0];
+			String fileName = arg;
 			if (fileName == null) {
-				sLogger.info("Please provide valid file name.");
-				return;
+				String message = "Please provide valid file name.";
+				loggerMessage.append(message + "\n");
+				sLogger.info(message);
+				return false;
 			}
+
 			fs = new FileInputStream(fileName);
 			byte[] data = new byte[10000000];
 			fs.read(data);
@@ -169,7 +182,7 @@ public class ExcelDataExtractorForValidation {
 						FILE_TYPE.XLSX);
 			} else {
 				sLogger.info("Invalid File (xls or xlsx)");
-				System.exit(0);
+				return false;
 			}
 			List<Object> buildHeader = transformer.buildHeader();
 			ProgramHeaderTO header = (ProgramHeaderTO) buildHeader.get(0);
@@ -178,18 +191,27 @@ public class ExcelDataExtractorForValidation {
 			List<String> validateHeaders = validator.validateHeaders();
 			List<String> validateValues = validator.validateValues(header);
 			if (validateHeaders.isEmpty()) {
-				sLogger.info("Headers are correct");
+				String message = "Headers are correct";
+				loggerMessage.append(message + "\n");
+				sLogger.info(message);
 			} else {
-				sLogger.info("Non compliance with headers,please use the template"+validateHeaders);
+				String message = "Non compliance with headers,please use the template"+validateHeaders;
+				loggerMessage.append(message + "\n");
+				sLogger.info(message);
+				return false;
 			}
 			if (validateValues.isEmpty()) {
-				sLogger.info("Header Values are correct");
+				String message = "Header Values are correct";
+				loggerMessage.append(message + "\n");
+				sLogger.info(message);
 			} else {
-				sLogger.info(validateValues.toString());
+				String message = validateValues.toString();
+				loggerMessage.append(message + "\n");
+				sLogger.info(message);
 			}
 		} catch (IOException e) {
 			sLogger.error(e.getMessage());
 		}
-
+		return true;
 	}
 }

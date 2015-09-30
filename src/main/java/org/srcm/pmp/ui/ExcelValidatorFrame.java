@@ -53,7 +53,12 @@ import javax.swing.*;
  * images/Open16.gif images/Save16.gif
  */
 public class ExcelValidatorFrame extends JPanel implements ActionListener {
-    static private final String newline = "\n";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2644511633444020426L;
+
+	static private final String newline = "\n";
 
     JButton openButton;
 

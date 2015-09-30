@@ -7,6 +7,7 @@ import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -107,7 +108,7 @@ public class ExcelDataExtractorForValidation {
 		header.setEmail(validateNull(emailRow.getCell(2)));
 		header.setInstituteName(validateNull(instRow.getCell(2)));
 		header.setWebsite(validateNull(websiteRow.getCell(2)));
-		//header.setProgramStartDate(validateDateNull(codateRow.getCell(2)));
+		header.setProgramStartDate(validateDateNull(codateRow.getCell(2)));
 		header.setProgramStartDate(null);
 
 		validator.setProgramName(validateNull(programRow.getCell(0)));
@@ -117,7 +118,12 @@ public class ExcelDataExtractorForValidation {
 		validator.setEmail(validateNull(emailRow.getCell(0)));
 		validator.setNameOfInstitute(validateNull(instRow.getCell(0)));
 		validator.setWebsite(validateNull(websiteRow.getCell(0)));
-		validator.setDatesOfProgram(validateDateNull(codateRow.getCell(0)));
+		Date validateDateNull = validateDateNull(codateRow.getCell(0));
+		if(validateDateNull!=null){
+		validator.setDatesOfProgram(validateDateNull.toString());
+		}else{
+			validator.setDatesOfProgram(validateNull(codateRow.getCell(0)));
+		}
 
 		sLogger.info(header.toString());
 		data.add(header);
@@ -138,11 +144,11 @@ public class ExcelDataExtractorForValidation {
 	 * @param cell
 	 * @return
 	 */
-	private String validateDateNull(Cell cell) {
+	private Date validateDateNull(Cell cell) {
 		if (cell != null) {
-			return cell.toString();
+			return cell.getDateCellValue();
 		}
-		return "";
+		return null;
 	}
 
 	public static void main(String[] args) {
@@ -209,6 +215,7 @@ public class ExcelDataExtractorForValidation {
 				loggerMessage.append(message + "\n");
 				sLogger.info(message);
 			}
+			loggerMessage.append(header.toString());
 		} catch (IOException e) {
 			sLogger.error(e.getMessage());
 		}

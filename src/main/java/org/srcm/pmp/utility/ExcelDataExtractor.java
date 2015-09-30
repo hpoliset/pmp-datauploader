@@ -29,13 +29,14 @@ import org.srcm.pmp.to.SeekerAimsTO;
  */
 public class ExcelDataExtractor {
 
+	private static final String YES = "yes";
 	private static final String DD_MMM_YYYY = "dd-MMM-yyyy";
-	private static final String DATE_OF_BIRTH = "Date of Birth";
+	private static final String FULL_NAME = "Full Name";
 	private SimpleDateFormat dateFormat = new SimpleDateFormat(DD_MMM_YYYY);
 
 	public static enum PARTICIPANT_COLS {
-		NAME(0), GENDER(1), DOB(2), ADDR(3), CITY(4), STATE(5), EMAIL(6), PHONE(7), INTRODUCED(8), INTR_DATE(
-				9), INTR_BY(10);
+		NAME(1), CITY(2), STATE(3), EMAIL(4), PHONE(5),OCCUPATION(6), INTRODUCED(7), INTR_DATE(
+				8), INTR_BY(9),REMARKS(10);
 		private int col;
 
 		private PARTICIPANT_COLS(int col) {
@@ -144,9 +145,9 @@ public class ExcelDataExtractor {
 					participantRows.add(row);
 				}
 			}
-			if (row != null && row.getCell(PARTICIPANT_COLS.DOB.getCol()) != null) {
-				String string = row.getCell(PARTICIPANT_COLS.DOB.getCol()).toString();
-				if (string.contains(DATE_OF_BIRTH)) {
+			if (row != null && row.getCell(PARTICIPANT_COLS.NAME.getCol()) != null) {
+				String string = row.getCell(PARTICIPANT_COLS.NAME.getCol()).toString();
+				if (string.contains(FULL_NAME)) {
 					mark = true;
 				}
 
@@ -193,20 +194,17 @@ public class ExcelDataExtractor {
 		populatePhone(seekerTo, cellPhone);
 		Cell cellIntroduced = row.getCell(PARTICIPANT_COLS.INTRODUCED.getCol());
 		if (cellIntroduced != null) {
-			if (cellIntroduced.toString().toLowerCase().contains("yes")) {
+			if (cellIntroduced.toString().toLowerCase().contains(YES)) {
 				seekerTo.setIntroduced(Boolean.TRUE);
 			}
 		}
 		setDate(row, seekerTo);
 		Cell cellIntrBy = row.getCell(PARTICIPANT_COLS.INTR_BY.getCol());
 		seekerTo.setIntroducedBy(validateNull(cellIntrBy));
-		Cell genderCell = row.getCell(PARTICIPANT_COLS.GENDER.getCol());
-		if (genderCell != null && genderCell.toString().contains("M")) {
-			seekerTo.setGender(1);
-		} else {
-			seekerTo.setGender(0);
-		}
-
+		Cell cellOcc = row.getCell(PARTICIPANT_COLS.OCCUPATION.getCol());
+		seekerTo.setOccupation(validateNull(cellOcc));
+		Cell cellRemarks = row.getCell(PARTICIPANT_COLS.REMARKS.getCol());
+		seekerTo.setRemarks(validateNull(cellRemarks));
 		return seekerTo;
 	}
 
@@ -309,7 +307,7 @@ public class ExcelDataExtractor {
 	public static void main(String[] args) {
 		FileInputStream fs;
 		try {
-			String fileName = "E:\\SampleData1.xlsx";
+			String fileName = "E:\\validatedExcels\\HFN-I-Renigunta-Tirupati-AP-MRKrishna.xlsx";
 			fs = new FileInputStream(fileName);
 			byte[] data = new byte[10000000];
 			fs.read(data);

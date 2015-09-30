@@ -172,7 +172,9 @@ public class ExcelDataExtractor {
 		List<SeekerAimsTO> aimsList = new ArrayList<SeekerAimsTO>();
 		for (Row row : participantRows) {
 			SeekerAimsTO buildParticipant = buildParticipant(row);
+			if(buildParticipant.getFirstName()!=null && !buildParticipant.getFirstName().isEmpty()){
 			aimsList.add(buildParticipant);
+			}
 		}
 		return aimsList;
 	}

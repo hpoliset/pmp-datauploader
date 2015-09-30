@@ -6,6 +6,8 @@ package org.srcm.pmp.utility;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -108,8 +110,10 @@ public class ExcelDataExtractorForValidation {
 		header.setEmail(validateNull(emailRow.getCell(2)));
 		header.setInstituteName(validateNull(instRow.getCell(2)));
 		header.setWebsite(validateNull(websiteRow.getCell(2)));
-		header.setProgramStartDate(validateDateNull(codateRow.getCell(2)));
-		header.setProgramStartDate(null);
+		String startDate = validateDateNull(codateRow.getCell(2));
+		if(startDate!=null){
+		 header.setProgramStartDate(getDate(startDate));
+		}
 
 		validator.setProgramName(validateNull(programRow.getCell(0)));
 		validator.setCenter(validateNull(centerRow.getCell(0)));
@@ -118,12 +122,7 @@ public class ExcelDataExtractorForValidation {
 		validator.setEmail(validateNull(emailRow.getCell(0)));
 		validator.setNameOfInstitute(validateNull(instRow.getCell(0)));
 		validator.setWebsite(validateNull(websiteRow.getCell(0)));
-		Date validateDateNull = validateDateNull(codateRow.getCell(0));
-		if(validateDateNull!=null){
-		validator.setDatesOfProgram(validateDateNull.toString());
-		}else{
-			validator.setDatesOfProgram(validateNull(codateRow.getCell(0)));
-		}
+		validator.setDatesOfProgram(validateDateNull(codateRow.getCell(0)));
 
 		sLogger.info(header.toString());
 		data.add(header);
@@ -131,6 +130,20 @@ public class ExcelDataExtractorForValidation {
 		// header.set
 
 		return data;
+	}
+
+	/**
+	 * @param startDate
+	 * @return
+	 */
+	private Date getDate(String startDate) {
+		SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy");
+		try {
+			return format.parse(startDate);
+		} catch (ParseException e) {
+			return null;
+		}
+		
 	}
 
 	private String validateNull(Cell cell) {
@@ -144,9 +157,9 @@ public class ExcelDataExtractorForValidation {
 	 * @param cell
 	 * @return
 	 */
-	private Date validateDateNull(Cell cell) {
+	private String validateDateNull(Cell cell) {
 		if (cell != null) {
-			return cell.getDateCellValue();
+			return cell.toString();
 		}
 		return null;
 	}

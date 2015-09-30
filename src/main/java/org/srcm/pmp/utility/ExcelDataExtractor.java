@@ -32,6 +32,7 @@ public class ExcelDataExtractor {
 	private static final String YES = "yes";
 	private static final String DD_MMM_YYYY = "dd-MMM-yyyy";
 	private static final String FULL_NAME = "Full Name";
+	private static final String PROGRAM_NAME = "Program Name";
 	private SimpleDateFormat dateFormat = new SimpleDateFormat(DD_MMM_YYYY);
 
 	public static enum PARTICIPANT_COLS {
@@ -112,21 +113,38 @@ public class ExcelDataExtractor {
 	 */
 	public ProgramHeaderTO buildProgramDetails() {
 		ProgramHeaderTO header = new ProgramHeaderTO();
-		Row programRow = sheet.getRow(HEADER_ROWS.PROGRAM_NAME.getRowVal());
-		Row nameRow = sheet.getRow(HEADER_ROWS.CO_NAME.getRowVal());
-		Row mailRow = sheet.getRow(HEADER_ROWS.CO_EMAIL.getRowVal());
-		Row centerRow = sheet.getRow(HEADER_ROWS.CO_CENTER.getRowVal());
-		Row instRow = sheet.getRow(HEADER_ROWS.CO_INSTNAME.getRowVal());
-		Row codateRow = sheet.getRow(HEADER_ROWS.CO_DATE.getRowVal());
-		Row website = sheet.getRow(HEADER_ROWS.CO_WEB_SITE.getRowVal());
+		
+		
+		int rowVal = 0;
+		for(int cnt=0;cnt < sheet.getPhysicalNumberOfRows();cnt++){
+			Row row = sheet.getRow(cnt);
+			if(row.getCell(0)!=null){
+				String val = row.getCell(0).toString();
+				if(val.contains(PROGRAM_NAME)){
+					rowVal = cnt;
+					break;
+				}
+			}
+		}
+		
+		
+		Row programRow = sheet.getRow(rowVal);
+		Row nameRow = sheet.getRow(rowVal+1);
+		Row centerRow = sheet.getRow(rowVal+3);
+		Row countryRow = sheet.getRow(rowVal+4);
+		Row emailRow = sheet.getRow(rowVal+2);
+		Row instRow = sheet.getRow(rowVal+5);
+		Row websiteRow = sheet.getRow(rowVal+6);
+		Row codateRow = sheet.getRow(rowVal+7);
 
-		header.setEmail(validateNull(mailRow.getCell(2)));
+		header.setEmail(validateNull(emailRow.getCell(2)));
 		header.setChannelName(programRow.getCell(2).getStringCellValue());
 		header.setCenter(centerRow.getCell(2).getStringCellValue());
 		populateCoordinatorNameAndEmail(header, nameRow);
 		populateCenterAndCountry(header, centerRow);
 		header.setInstituteName(instRow.getCell(2).toString());
-		header.setWebsite(validateNull(website.getCell(2)));
+		header.setWebsite(validateNull(websiteRow.getCell(2)));
+		header.setCountry(validateNull(countryRow.getCell(2)));
 		populateStartDate(header, codateRow);
 
 		return header;
@@ -160,7 +178,11 @@ public class ExcelDataExtractor {
 			}
 
 		}
+		ProgramHeaderTO buildProgramDetails = buildProgramDetails();
 		List<SeekerAimsTO> processRows = processRows(participantRows);
+		for(SeekerAimsTO seekerAims:processRows){
+			seekerAims.setCountry(buildProgramDetails.getCountry());
+		}
 		sLogger.info("Participant list:" + participantRows.size());
 		return processRows;
 	}
@@ -325,6 +347,7 @@ public class ExcelDataExtractor {
 			}
 			ProgramHeaderTO buildHeader = transformer.buildProgramDetails();
 			List<SeekerAimsTO> buildParticipants = transformer.buildParticipants();
+			
 			System.out.println(buildHeader);
 			System.out.println(buildParticipants);
 		} catch (IOException e) {

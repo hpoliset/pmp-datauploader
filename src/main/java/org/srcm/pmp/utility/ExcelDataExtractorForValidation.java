@@ -97,13 +97,15 @@ public class ExcelDataExtractorForValidation {
 		Row programRow = sheet.getRow(rowVal);
 		Row nameRow = sheet.getRow(rowVal+1);
 		Row centerRow = sheet.getRow(rowVal+3);
-		Row countryRow = sheet.getRow(rowVal+4);
+		Row stateRow = sheet.getRow(rowVal+4);
+		Row countryRow = sheet.getRow(rowVal+5);
 		Row emailRow = sheet.getRow(rowVal+2);
-		Row instRow = sheet.getRow(rowVal+5);
-		Row websiteRow = sheet.getRow(rowVal+6);
-		Row codateRow = sheet.getRow(rowVal+7);
+		Row instRow = sheet.getRow(rowVal+6);
+		Row websiteRow = sheet.getRow(rowVal+7);
+		Row codateRow = sheet.getRow(rowVal+8);
 
 		header.setChannelName(validateNull(programRow.getCell(2)));
+		header.setState(validateNull(stateRow.getCell(2)));
 		header.setCenter(validateNull(centerRow.getCell(2)));
 		header.setCoordinatorName(validateNull(nameRow.getCell(2)));
 		header.setCountry(validateNull(countryRow.getCell(2)));
@@ -117,6 +119,7 @@ public class ExcelDataExtractorForValidation {
 
 		validator.setProgramName(validateNull(programRow.getCell(0)));
 		validator.setCenter(validateNull(centerRow.getCell(0)));
+		validator.setState(validateNull(stateRow.getCell(0)));
 		validator.setCoordinatorName(validateNull(nameRow.getCell(0)));
 		validator.setCountry(validateNull(countryRow.getCell(0)));
 		validator.setEmail(validateNull(emailRow.getCell(0)));
@@ -148,7 +151,7 @@ public class ExcelDataExtractorForValidation {
 
 	private String validateNull(Cell cell) {
 		if (cell != null) {
-			return cell.getStringCellValue();
+			return cell.toString();
 		}
 		return "";
 	}

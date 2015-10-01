@@ -2,6 +2,7 @@ package org.srcm.pmp.domain;
 // Generated 28 Sep, 2015 3:44:34 AM by Hibernate Tools 4.3.1.Final
 
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -22,6 +23,10 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "seeker_aims")
 public class SeekerAims implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5437255934947163207L;
 	private int seekerId;
 	private Program program;
 	private String firstName;

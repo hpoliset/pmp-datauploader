@@ -18,13 +18,14 @@ import java.util.Set;
 public class ProgramHeaderValidator implements Serializable {
 	private static final long serialVersionUID = 6428666466557471589L;
 	private List<String> headers = Arrays.asList("Program Name",
-			"Coordinator's name", "Email Id", "Name of the Center", "Country",
+			"Coordinator's name", "Email Id", "Name of the Center","State", "Country",
 			"Website", "Dates of the program", "Name of the Institution");
 
 	private String programName;
 	private String coordinatorName;
 	private String email;
 	private String center;
+	private String state;
 	private String website;
 	private String datesOfProgram;
 	private String country;
@@ -36,10 +37,11 @@ public class ProgramHeaderValidator implements Serializable {
 		map.put(headers.get(1), coordinatorName);
 		map.put(headers.get(2), email);
 		map.put(headers.get(3), center);
-		map.put(headers.get(4), country);
-		map.put(headers.get(5), website);
-		map.put(headers.get(6), datesOfProgram);
-		map.put(headers.get(7), nameOfInstitute);
+		map.put(headers.get(4), state);
+		map.put(headers.get(5), country);
+		map.put(headers.get(6), website);
+		map.put(headers.get(7), datesOfProgram);
+		map.put(headers.get(8), nameOfInstitute);
 
 	}
 
@@ -173,6 +175,20 @@ public class ProgramHeaderValidator implements Serializable {
 	}
 
 	/**
+	 * @return the state
+	 */
+	public String getState() {
+		return state;
+	}
+
+	/**
+	 * @param state the state to set
+	 */
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	/**
 	 * @return
 	 */
 	public List<String> validateHeaders() {
@@ -209,6 +225,9 @@ public class ProgramHeaderValidator implements Serializable {
 		if (headerTO.getCenter() == null || headerTO.getCenter().isEmpty()) {
 			errList.add("Center is Mandatory");
 		}
+		if (headerTO.getState() == null || headerTO.getState().isEmpty()) {
+			errList.add("State is Mandatory");
+		}
 		if (headerTO.getCountry() == null || headerTO.getCountry().isEmpty()) {
 			errList.add("Country is Mandatory");
 		}
@@ -216,7 +235,8 @@ public class ProgramHeaderValidator implements Serializable {
 				) {
 			errList.add("ProgramStartDate is Mandatory");
 		} else {
-			SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy");
+			//SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy");
+			SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy");
 			try {
 				format.parse(headerTO.getProgramStartDate().toString());
 			} catch (ParseException e) {

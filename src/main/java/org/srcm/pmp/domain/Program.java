@@ -4,7 +4,6 @@ package org.srcm.pmp.domain;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,6 +35,7 @@ public class Program implements java.io.Serializable {
 	private String coordName;
 	private String coordEmail;
 	private String coordCenterName;
+	private String coordState;
 	private String coordCountry;
 	private String instName;
 	private String instWebsite;
@@ -56,7 +56,7 @@ public class Program implements java.io.Serializable {
 
 	public Program(String programChannel, String coordName, String coordEmail,
 			String coordCenterName, String coordCountry, String instName, String instWebsite, Date programStartDate,
-			String programRawDate,
+			String programRawDate,String coordState,
 			List<SeekerAims> seekerAimses) {
 		this.programChannel = programChannel;
 		this.coordName = coordName;
@@ -68,6 +68,7 @@ public class Program implements java.io.Serializable {
 		this.programStartDate = programStartDate;
 		this.programRawDate = programRawDate;
 		this.seekerAimses = seekerAimses;
+		this.coordState = coordState;
 	}
 
 	
@@ -127,6 +128,21 @@ public class Program implements java.io.Serializable {
 
 	public void setCoordCenterName(String coordCenterName) {
 		this.coordCenterName = coordCenterName;
+	}
+
+	/**
+	 * @return the coordState
+	 */
+	@Column(name = "Coord_State")
+	public String getCoordState() {
+		return coordState;
+	}
+
+	/**
+	 * @param coordState the coordState to set
+	 */
+	public void setCoordState(String coordState) {
+		this.coordState = coordState;
 	}
 
 	@Column(name = "Coord_Country")

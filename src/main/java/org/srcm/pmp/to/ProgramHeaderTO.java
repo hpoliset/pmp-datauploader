@@ -18,6 +18,7 @@ public class ProgramHeaderTO implements Serializable {
 	  private String website;
 	  private Date programStartDate;
 	  private String programRawStartDate;
+	  private String state;
 	  /**
 	 * @return the programRawStartDate
 	 */
@@ -140,6 +141,18 @@ public class ProgramHeaderTO implements Serializable {
 	
 	
 	/**
+	 * @return the state
+	 */
+	public String getState() {
+		return state;
+	}
+	/**
+	 * @param state the state to set
+	 */
+	public void setState(String state) {
+		this.state = state;
+	}
+	/**
 	 * @return the seekerAimsTo
 	 */
 	public List<SeekerAimsTO> getSeekerAimsTo() {
@@ -160,7 +173,7 @@ public class ProgramHeaderTO implements Serializable {
 				+ ",\ninstituteName=" + instituteName + ",\n website=" + website
 				+ ",\n programStartDate=" + programStartDate + ",\n country="
 				+ country + ",\n coordinatorName=" + coordinatorName + ",\n email="
-				+ email + ",\n center=" + center + "]";
+				+ email + ",\n center=" + center + ",\n State=" + state +"]";
 	}
 	
 	

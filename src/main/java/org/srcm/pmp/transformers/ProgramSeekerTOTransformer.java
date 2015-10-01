@@ -37,7 +37,7 @@ public class ProgramSeekerTOTransformer {
 		Program program = new Program(programTo.getChannelName(),
 				programTo.getCoordinatorName(), programTo.getEmail(),
 				programTo.getCenter(), programTo.getCountry(), programTo.getInstituteName(),
-				programTo.getWebsite(), programTo.getProgramStartDate(), programTo.getProgramRawStartDate(),
+				programTo.getWebsite(), programTo.getProgramStartDate(), programTo.getProgramRawStartDate(),programTo.getState(),
 				seekerAims);
 		return program;
 

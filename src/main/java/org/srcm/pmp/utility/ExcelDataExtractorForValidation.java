@@ -76,32 +76,32 @@ public class ExcelDataExtractorForValidation {
 		}
 	}
 
-
 	/**
 	 * Validating header row
 	 * 
 	 * @return
 	 */
-	public List<String> validateParticipantHeaders(){
+	public List<String> validateParticipantHeaders() {
 		int rowVal = getParticipantDataHeaderRow();
 		List<String> errorHeaders = new ArrayList<String>();
-	    if(rowVal>0){
-	    	Row rowHeader = sheet.getRow(rowVal);
-	    	for(ParticipantHeaders partHeader:ParticipantHeaders.values()){
-	    		Cell cell = rowHeader.getCell(partHeader.getCell());
-	    		String string = cell.toString();
+		if (rowVal > 0) {
+			Row rowHeader = sheet.getRow(rowVal);
+			for (ParticipantHeaders partHeader : ParticipantHeaders.values()) {
+				Cell cell = rowHeader.getCell(partHeader.getCell());
+				String string = cell.toString();
 				if (string == null
 						|| !string.trim().equalsIgnoreCase(
 								partHeader.getHeader().toLowerCase())) {
 					errorHeaders.add(partHeader.getHeader());
 				}
-	    	};
-	    }else{
-	    	errorHeaders.add(ParticipantHeaders.values().toString());
-	    }
-		
+			}
+			;
+		} else {
+			errorHeaders.add(ParticipantHeaders.values().toString());
+		}
+
 		return errorHeaders;
-		
+
 	}
 
 	/**
@@ -109,11 +109,13 @@ public class ExcelDataExtractorForValidation {
 	 */
 	private int getParticipantDataHeaderRow() {
 		int rowVal = 0;
-		for(int cnt=0;cnt < sheet.getPhysicalNumberOfRows();cnt++){
+		for (int cnt = 0; cnt < sheet.getPhysicalNumberOfRows(); cnt++) {
 			Row row = sheet.getRow(cnt);
-			if(row!=null && row.getCell(ParticipantHeaders.NAME.getCell())!=null){
-				String val = row.getCell(ParticipantHeaders.NAME.getCell()).toString();
-				if(val.contains(ParticipantHeaders.NAME.getHeader())){
+			if (row != null
+					&& row.getCell(ParticipantHeaders.NAME.getCell()) != null) {
+				String val = row.getCell(ParticipantHeaders.NAME.getCell())
+						.toString();
+				if (val.contains(ParticipantHeaders.NAME.getHeader())) {
 					rowVal = cnt;
 					break;
 				}
@@ -121,8 +123,7 @@ public class ExcelDataExtractorForValidation {
 		}
 		return rowVal;
 	}
-	
-	
+
 	/**
 	 * @return
 	 */
@@ -131,27 +132,26 @@ public class ExcelDataExtractorForValidation {
 		ProgramHeaderTO header = new ProgramHeaderTO();
 		ProgramHeaderValidator validator = new ProgramHeaderValidator();
 		int rowVal = 0;
-		for(int cnt=0;cnt < sheet.getPhysicalNumberOfRows();cnt++){
+		for (int cnt = 0; cnt < sheet.getPhysicalNumberOfRows(); cnt++) {
 			Row row = sheet.getRow(cnt);
-			if(row.getCell(0)!=null){
+			if (row.getCell(0) != null) {
 				String val = row.getCell(0).toString();
-				if(val.contains(PROGRAM_NAME)){
+				if (val.contains(PROGRAM_NAME)) {
 					rowVal = cnt;
 					break;
 				}
 			}
 		}
-		
-		
+
 		Row programRow = sheet.getRow(rowVal);
-		Row nameRow = sheet.getRow(rowVal+1);
-		Row centerRow = sheet.getRow(rowVal+3);
-		Row stateRow = sheet.getRow(rowVal+4);
-		Row countryRow = sheet.getRow(rowVal+5);
-		Row emailRow = sheet.getRow(rowVal+2);
-		Row instRow = sheet.getRow(rowVal+6);
-		Row websiteRow = sheet.getRow(rowVal+7);
-		Row codateRow = sheet.getRow(rowVal+8);
+		Row nameRow = sheet.getRow(rowVal + 1);
+		Row centerRow = sheet.getRow(rowVal + 3);
+		Row stateRow = sheet.getRow(rowVal + 4);
+		Row countryRow = sheet.getRow(rowVal + 5);
+		Row emailRow = sheet.getRow(rowVal + 2);
+		Row instRow = sheet.getRow(rowVal + 6);
+		Row websiteRow = sheet.getRow(rowVal + 7);
+		Row codateRow = sheet.getRow(rowVal + 8);
 
 		header.setChannelName(validateNull(programRow.getCell(2)));
 		header.setState(validateNull(stateRow.getCell(2)));
@@ -162,8 +162,8 @@ public class ExcelDataExtractorForValidation {
 		header.setInstituteName(validateNull(instRow.getCell(2)));
 		header.setWebsite(validateNull(websiteRow.getCell(2)));
 		String startDate = validateDateNull(codateRow.getCell(2));
-		if(startDate!=null){
-		 header.setProgramStartDate(getDate(startDate));
+		if (startDate != null) {
+			header.setProgramStartDate(getDate(startDate));
 		}
 
 		validator.setProgramName(validateNull(programRow.getCell(0)));
@@ -195,7 +195,7 @@ public class ExcelDataExtractorForValidation {
 		} catch (ParseException e) {
 			return null;
 		}
-		
+
 	}
 
 	private String validateNull(Cell cell) {
@@ -217,18 +217,19 @@ public class ExcelDataExtractorForValidation {
 	}
 
 	public static void main(String[] args) {
-		if(args[0]==null){
+		if (args[0] == null) {
 			sLogger.error("Please provide Input file name.");
 		}
 		StringBuffer loggerMessage = new StringBuffer();
 		boolean isValid = validateHeartfulnessExcelFile(args[0], loggerMessage);
-		if(!isValid) {
+		if (!isValid) {
 			System.exit(-1);
 		}
 		System.exit(0);
 	}
 
-	public static boolean validateHeartfulnessExcelFile(String arg, StringBuffer loggerMessage) {
+	public static boolean validateHeartfulnessExcelFile(String arg,
+			StringBuffer loggerMessage) {
 
 		FileInputStream fs;
 		try {
@@ -255,45 +256,64 @@ public class ExcelDataExtractorForValidation {
 				sLogger.info("Invalid File (xls or xlsx)");
 				return false;
 			}
-			List<Object> buildHeader = transformer.buildHeader();
-			ProgramHeaderTO header = (ProgramHeaderTO) buildHeader.get(0);
-			ProgramHeaderValidator validator = (ProgramHeaderValidator) buildHeader
-					.get(1);
-			List<String> validateHeaders = validator.validateHeaders();
-			List<String> validateValues = validator.validateValues(header);
-			List<String> err = transformer.validateParticipantHeaders();
-			if(err.isEmpty()){
-				loggerMessage.append("Participant headers are Correct" + "\n");
-			}else{
-				loggerMessage.append("Participant headers are not Compliance with Template" + "\n");
-				loggerMessage.append(err.toString());
-			}
-			sLogger.info(loggerMessage.toString());
-			if (validateHeaders.isEmpty()) {
-				String message = "Headers are correct";
-				loggerMessage.append(message + "\n");
-				sLogger.info(message);
-			} else {
-				String message = "Non compliance with headers,please use the template"+validateHeaders;
-				loggerMessage.append(message + "\n");
-				sLogger.info(message);
-				loggerMessage.append(validateValues.toString() + "\n");
-				loggerMessage.append(header.toString() + "\n");
-				return false;
-			}
-			if (validateValues.isEmpty()) {
-				String message = "Header Values are correct";
-				loggerMessage.append(message + "\n");
-				sLogger.info(message);
-			} else {
-				String message = validateValues.toString();
-				loggerMessage.append(message + "\n");
-				sLogger.info(message);
-			}
-			loggerMessage.append(header.toString());
+			boolean validateContent = transformer
+					.validateContent(loggerMessage);
+			loggerMessage.append(validateContent);
 		} catch (IOException e) {
 			sLogger.error(e.getMessage());
 		}
 		return true;
+	}
+
+	/**
+	 * 
+	 * 
+	 * @param loggerMessage
+	 */
+	public boolean validateContent(StringBuffer loggerMessage) {
+		boolean validated = false;
+		List<Object> buildHeader = buildHeader();
+		ProgramHeaderTO header = (ProgramHeaderTO) buildHeader.get(0);
+		ProgramHeaderValidator validator = (ProgramHeaderValidator) buildHeader
+				.get(1);
+		List<String> validateHeaders = validator.validateHeaders();
+		List<String> validateValues = validator.validateValues(header);
+		List<String> err = validateParticipantHeaders();
+		if (err.isEmpty()) {
+			loggerMessage.append("Participant headers are Correct" + "\n");
+		} else {
+			loggerMessage
+					.append("Participant headers are not Compliance with Template"
+							+ "\n");
+			loggerMessage.append(err.toString());
+		}
+		sLogger.info(loggerMessage.toString());
+		if (validateHeaders.isEmpty()) {
+			String message = "Headers are correct";
+			loggerMessage.append(message + "\n");
+			sLogger.info(message);
+		} else {
+			String message = "Non compliance with headers,please use the template"
+					+ validateHeaders;
+			loggerMessage.append(message + "\n");
+			sLogger.info(message);
+			loggerMessage.append(validateValues.toString() + "\n");
+			loggerMessage.append(header.toString() + "\n");
+		}
+		if (validateValues.isEmpty()) {
+			String message = "Header Values are correct";
+			loggerMessage.append(message + "\n");
+			sLogger.info(message);
+		} else {
+			String message = validateValues.toString();
+			loggerMessage.append(message + "\n");
+			sLogger.info(message);
+		}
+		loggerMessage.append(header.toString());
+		if (validateHeaders.isEmpty() && validateValues.isEmpty()
+				&& err.isEmpty()) {
+			validated = Boolean.TRUE;
+		}
+		return validated;
 	}
 }

@@ -1,5 +1,7 @@
 package org.srcm.pmp.dao;
 
+import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -41,6 +43,19 @@ public class SeekerDAOImpl implements SeekerDAO{
 		Criteria createCriteria = currentSession.createCriteria(SeekerAim.class);
 		createCriteria.add(Restrictions.eq("email", email));
 		return (SeekerAim)createCriteria.uniqueResult();
+	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<Program> findProgram(String programName,String coordName) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		Criteria createCriteria = currentSession.createCriteria(Program.class)
+			      .add(Restrictions.eq("programChannel", programName))
+			      .add(Restrictions.eqOrIsNull("coordName", coordName));
+				 // .add(Restrictions.("programDate",dateOfProgram));
+			    //.setResultTransformer(Transformers.aliasToBean(Program.class));
+
+		return createCriteria.list();
 	}
      
 }

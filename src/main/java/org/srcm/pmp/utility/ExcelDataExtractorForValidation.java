@@ -220,6 +220,7 @@ public class ExcelDataExtractorForValidation {
 				String message = "Non compliance with headers,please use the template"+validateHeaders;
 				loggerMessage.append(message + "\n");
 				sLogger.info(message);
+				loggerMessage.append(validateValues.toString() + "\n");
 				return false;
 			}
 			if (validateValues.isEmpty()) {

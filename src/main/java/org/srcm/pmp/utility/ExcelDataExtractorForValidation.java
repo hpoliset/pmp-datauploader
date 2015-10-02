@@ -77,6 +77,55 @@ public class ExcelDataExtractorForValidation {
 	}
 
 
+	/**
+	 * Validating header row
+	 * 
+	 * @return
+	 */
+	public List<String> validateParticipantHeaders(){
+		int rowVal = getParticipantDataHeaderRow();
+		List<String> errorHeaders = new ArrayList<String>();
+	    if(rowVal>0){
+	    	Row rowHeader = sheet.getRow(rowVal);
+	    	for(ParticipantHeaders partHeader:ParticipantHeaders.values()){
+	    		Cell cell = rowHeader.getCell(partHeader.getCell());
+	    		String string = cell.toString();
+				if (string == null
+						|| !string.trim().equalsIgnoreCase(
+								partHeader.getHeader().toLowerCase())) {
+					errorHeaders.add(partHeader.getHeader());
+				}
+	    	};
+	    }else{
+	    	errorHeaders.add(ParticipantHeaders.values().toString());
+	    }
+		
+		return errorHeaders;
+		
+	}
+
+	/**
+	 * @return
+	 */
+	private int getParticipantDataHeaderRow() {
+		int rowVal = 0;
+		for(int cnt=0;cnt < sheet.getPhysicalNumberOfRows();cnt++){
+			Row row = sheet.getRow(cnt);
+			if(row!=null && row.getCell(ParticipantHeaders.NAME.getCell())!=null){
+				String val = row.getCell(ParticipantHeaders.NAME.getCell()).toString();
+				if(val.contains(ParticipantHeaders.NAME.getHeader())){
+					rowVal = cnt;
+					break;
+				}
+			}
+		}
+		return rowVal;
+	}
+	
+	
+	/**
+	 * @return
+	 */
 	public List<Object> buildHeader() {
 		List<Object> data = new ArrayList<Object>();
 		ProgramHeaderTO header = new ProgramHeaderTO();
@@ -212,6 +261,14 @@ public class ExcelDataExtractorForValidation {
 					.get(1);
 			List<String> validateHeaders = validator.validateHeaders();
 			List<String> validateValues = validator.validateValues(header);
+			List<String> err = transformer.validateParticipantHeaders();
+			if(err.isEmpty()){
+				loggerMessage.append("Participant headers are Correct" + "\n");
+			}else{
+				loggerMessage.append("Participant headers are not Compliance with Template" + "\n");
+				loggerMessage.append(err.toString());
+			}
+			sLogger.info(loggerMessage.toString());
 			if (validateHeaders.isEmpty()) {
 				String message = "Headers are correct";
 				loggerMessage.append(message + "\n");

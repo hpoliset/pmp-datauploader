@@ -142,8 +142,7 @@ public class ExcelDataExtractor {
 		header.setEmail(validateNull(emailRow.getCell(2)));
 		header.setChannelName(programRow.getCell(2).getStringCellValue());
 		header.setCenter(centerRow.getCell(2).getStringCellValue());
-		populateCoordinatorNameAndEmail(header, nameRow);
-		populateCenterAndCountry(header, centerRow);
+		header.setCoordinatorName(validateNull(nameRow.getCell(2)));
 		header.setInstituteName(instRow.getCell(2).toString());
 		header.setWebsite(validateNull(websiteRow.getCell(2)));
 		header.setCountry(validateNull(countryRow.getCell(2)));
@@ -281,48 +280,8 @@ public class ExcelDataExtractor {
 
 	}
 
-	/**
-	 * @param header
-	 * @param centerRow
-	 */
-	private void populateCenterAndCountry(ProgramHeaderTO header, Row centerRow) {
-		String center = centerRow.getCell(2).getStringCellValue();
-		String[] centerData = center.split(",");
-		if (centerData != null && centerData.length > 1) {
-			header.setCenter(centerData[0]);
-			header.setCountry(centerData[1]);
-		} else {
-			header.setCenter(center);
-		}
 
-	}
 
-	/**
-	 * @param header
-	 * @param nameRow
-	 */
-	private void populateCoordinatorNameAndEmail(ProgramHeaderTO header, Row nameRow) {
-		String coName = nameRow.getCell(2).getStringCellValue();
-		if (coName.indexOf("@") > 0) {
-			String[] splitData = coName.split(",");
-			if (splitData.length > 2) {
-				fillNameAndEmail(header, coName, splitData);
-			} else {
-				splitData = coName.split(" ");
-				if (splitData.length > 1) {
-					fillNameAndEmail(header, coName, splitData);
-				}
-			}
-
-		}
-	}
-
-	private void fillNameAndEmail(ProgramHeaderTO header, String coName, String[] splitData) {
-		String email = splitData[splitData.length - 1];
-		header.setEmail(email);
-		String coordName = coName.substring(0, coName.indexOf(email));
-		header.setCoordinatorName(coordName);
-	}
 
 	private String validateNull(Cell cell) {
 		if (cell != null) {

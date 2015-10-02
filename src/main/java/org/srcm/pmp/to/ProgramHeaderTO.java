@@ -171,6 +171,7 @@ public class ProgramHeaderTO implements Serializable {
 	public String toString() {
 		return "[channelName=" + channelName
 				+ ",\ninstituteName=" + instituteName + ",\n website=" + website
+				+ ",\n program raw Start date=" + programRawStartDate 
 				+ ",\n programStartDate=" + programStartDate + ",\n country="
 				+ country + ",\n coordinatorName=" + coordinatorName + ",\n email="
 				+ email + ",\n center=" + center + ",\n State=" + state +"]";

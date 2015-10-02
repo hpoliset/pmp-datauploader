@@ -26,10 +26,9 @@ import org.srcm.pmp.services.ParticipantService;
  * @author rudra
  *
  */
-@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=ApplicationContextConfig.class,loader=AnnotationConfigContextLoader.class)
-@Transactional
+
 public class PMPServicesTest {
 	
 	@Autowired
@@ -43,7 +42,7 @@ public class PMPServicesTest {
 	 */
 	
 	/*@Test
-	
+	@Transactional
 	public void testPersistSeekerDetailsFromExcel() {
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		try {
@@ -55,5 +54,10 @@ public class PMPServicesTest {
 			e.printStackTrace();
 		}
 	}*/
+
+	@Test	
+	public void testPersistSeekerDetailsFromExcel(){
+		
+	}
 
 }

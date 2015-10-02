@@ -150,7 +150,7 @@ public class ExcelValidatorFrame extends JPanel implements ActionListener {
         JDialog.setDefaultLookAndFeelDecorated(true);
 
         //Create and set up the window.
-        JFrame frame = new JFrame("SwingFileChooserDemo");
+        JFrame frame = new JFrame("Participant Data Validator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Create and set up the content pane.

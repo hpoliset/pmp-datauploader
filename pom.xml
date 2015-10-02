@@ -39,11 +39,12 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-	<groupId>org.springframework</groupId>
-	<artifactId>spring-test</artifactId>
-	<version>4.1.1.RELEASE</version>
-</dependency>
-		
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>4.1.1.RELEASE</version>
+			<scope>test</scope>
+		</dependency>
+
 
 		<!-- Hibernate -->
 		<dependency>
@@ -64,6 +65,12 @@
 			<artifactId>javax.servlet.jsp-api</artifactId>
 			<version>2.3.1</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
 		</dependency>
 
 		<!-- Apache Database Connection Pool -->
@@ -95,6 +102,8 @@
 			<artifactId>jxls-reader</artifactId>
 			<version>2.0.1</version>
 		</dependency>
+		
+		
 	</dependencies>
 	<build>
 		<finalName>pmp</finalName>
@@ -111,6 +120,7 @@
 					</additionalBuildcommands>
 					<downloadSources>true</downloadSources>
 					<downloadJavadocs>true</downloadJavadocs>
+					
 				</configuration>
 			</plugin>
 			<plugin>
@@ -123,6 +133,7 @@
 					<compilerArgument>-Xlint:all</compilerArgument>
 					<showWarnings>true</showWarnings>
 					<showDeprecation>true</showDeprecation>
+					
 				</configuration>
 			</plugin>
 			<plugin>
@@ -133,6 +144,27 @@
 					<mainClass>org.test.int1.Main</mainClass>
 				</configuration>
 			</plugin>
+			<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+			<plugin>
+		    <groupId>org.apache.maven.plugins</groupId>
+		    <artifactId>maven-failsafe-plugin</artifactId>
+		    <version>2.12.4</version>
+		    <dependencies>
+		      <dependency>
+		        <groupId>org.apache.maven.surefire</groupId>
+		        <artifactId>surefire-junit47</artifactId>
+		        <version>2.12.4</version>
+		      </dependency>
+		    </dependencies>
+		  </plugin>
+			
+			
 		</plugins>
 	</build>
 

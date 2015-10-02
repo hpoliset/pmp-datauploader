@@ -1,8 +1,6 @@
 package org.srcm.pmp.to;
 
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -30,6 +28,21 @@ public class ProgramHeaderValidator implements Serializable {
 	private String datesOfProgram;
 	private String country;
 	private String nameOfInstitute;
+	private String rawProgramDate;
+	/**
+	 * @return the rawProgramDate
+	 */
+	public String getRawProgramDate() {
+		return rawProgramDate;
+	}
+
+	/**
+	 * @param rawProgramDate the rawProgramDate to set
+	 */
+	public void setRawProgramDate(String rawProgramDate) {
+		this.rawProgramDate = rawProgramDate;
+	}
+
 	private Map<String, String> map = new HashMap<String, String>();
 
 	private void initialize() {
@@ -234,14 +247,6 @@ public class ProgramHeaderValidator implements Serializable {
 		if (headerTO.getProgramStartDate() == null
 				) {
 			errList.add("ProgramStartDate is Mandatory");
-		} else {
-			//SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy");
-			SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy");
-			try {
-				format.parse(headerTO.getProgramStartDate().toString());
-			} catch (ParseException e) {
-				errList.add("ProgramStartDate is invalid date format:dd/MM/yyyy");
-			}
 		}
 		return errList;
 

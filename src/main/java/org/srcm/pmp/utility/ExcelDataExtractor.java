@@ -130,12 +130,14 @@ public class ExcelDataExtractor {
 		
 		Row programRow = sheet.getRow(rowVal);
 		Row nameRow = sheet.getRow(rowVal+1);
-		Row centerRow = sheet.getRow(rowVal+3);
-		Row countryRow = sheet.getRow(rowVal+4);
 		Row emailRow = sheet.getRow(rowVal+2);
-		Row instRow = sheet.getRow(rowVal+5);
-		Row websiteRow = sheet.getRow(rowVal+6);
-		Row codateRow = sheet.getRow(rowVal+7);
+		Row centerRow = sheet.getRow(rowVal+3);
+		Row stateRow = sheet.getRow(rowVal+4);
+		Row countryRow = sheet.getRow(rowVal+5);
+		
+		Row instRow = sheet.getRow(rowVal+6);
+		Row websiteRow = sheet.getRow(rowVal+7);
+		Row codateRow = sheet.getRow(rowVal+8);
 
 		header.setEmail(validateNull(emailRow.getCell(2)));
 		header.setChannelName(programRow.getCell(2).getStringCellValue());
@@ -145,6 +147,7 @@ public class ExcelDataExtractor {
 		header.setInstituteName(instRow.getCell(2).toString());
 		header.setWebsite(validateNull(websiteRow.getCell(2)));
 		header.setCountry(validateNull(countryRow.getCell(2)));
+		header.setState(validateNull(stateRow.getCell(2)));
 		populateStartDate(header, codateRow);
 
 		return header;

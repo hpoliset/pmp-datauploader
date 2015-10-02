@@ -259,6 +259,7 @@ public class ExcelDataExtractorForValidation {
 			boolean validateContent = transformer
 					.validateContent(loggerMessage);
 			loggerMessage.append(validateContent);
+			return validateContent;
 		} catch (IOException e) {
 			sLogger.error(e.getMessage());
 		}

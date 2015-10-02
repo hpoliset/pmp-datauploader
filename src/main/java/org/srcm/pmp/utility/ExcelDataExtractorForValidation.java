@@ -221,6 +221,7 @@ public class ExcelDataExtractorForValidation {
 				loggerMessage.append(message + "\n");
 				sLogger.info(message);
 				loggerMessage.append(validateValues.toString() + "\n");
+				loggerMessage.append(header.toString() + "\n");
 				return false;
 			}
 			if (validateValues.isEmpty()) {

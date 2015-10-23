@@ -34,8 +34,12 @@ public class ExcelDataExtractorForValidationV2 implements ExcelDataValidator {
 	private static Logger sLogger = LoggerFactory
 			.getLogger(ExcelDataExtractorForValidationV2.class.getName());
 
-	public ExcelDataExtractorForValidationV2(byte[] data, FileType fileType) {
-		buildWorkBook(data, fileType);
+	public ExcelDataExtractorForValidationV2(byte[] data, String fileName) {
+		if (fileName.endsWith("xlsx"))
+			buildWorkBook(data, FileType.XLSX);
+		else if (fileName.endsWith("xls")) {
+			buildWorkBook(data, FileType.XLS);
+		}
 
 	}
 

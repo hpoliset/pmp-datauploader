@@ -32,16 +32,20 @@ import org.srcm.pmp.utility.FileType;
 public class ExcelDataExtractroV2 implements ExcelDataProcessor {
 	private static final String DD_MMM_YYYY = "dd-MMM-yyyy";
 	private SimpleDateFormat dateFormat = new SimpleDateFormat(DD_MMM_YYYY);
-	private static Logger sLogger = LoggerFactory.getLogger(ExcelDataExtractor.class.getName());
+	private static Logger sLogger = LoggerFactory
+			.getLogger(ExcelDataExtractor.class.getName());
 	private Workbook workbook;
 	private Sheet sheetEvent;
 	private Sheet sheetParticipants;
 
-	
-	public ExcelDataExtractroV2(byte[]data,FileType fileType){
-		buildWorkBook(data,fileType);
+	public ExcelDataExtractroV2(byte[] data, String fileName) {
+		if (fileName.endsWith("xlsx"))
+			buildWorkBook(data, FileType.XLSX);
+		else if (fileName.endsWith("xls")) {
+			buildWorkBook(data, FileType.XLS);
+		}
 	}
-	
+
 	/**
 	 * @param data
 	 * @param fileType
@@ -57,75 +61,118 @@ public class ExcelDataExtractroV2 implements ExcelDataProcessor {
 			sheetEvent = workbook.getSheet("Event Details");
 			sheetParticipants = workbook.getSheet("Participants Details");
 		} catch (IOException e) {
-			sLogger.error("Issues with files",e);
+			sLogger.error("Issues with files", e);
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.srcm.pmp.utility.ExcelDataProcessor#buildProgramDetails()
 	 */
 	@Override
-	public ProgramHeaderTO buildProgramDetails() {
+	public ProgramHeaderTO buildProgramDetails() throws Exception {
+		if (sheetEvent == null || sheetParticipants == null) {
+			throw new Exception("Invalid V2");
+		}
 		ProgramHeaderTO header = new ProgramHeaderTO();
-		
-		Row programEventRow = sheetEvent.getRow(ProgramCols.EVENT_TYPE.getRow());
+
+		Row programEventRow = sheetEvent
+				.getRow(ProgramCols.EVENT_TYPE.getRow());
 		Row programOther = sheetEvent.getRow(ProgramCols.OTHER.getRow());
-		Row programEventPlace = sheetEvent.getRow(ProgramCols.EVENT_PLACE.getRow());
-		Row programEventDate = sheetEvent.getRow(ProgramCols.EVENT_DATE.getRow());
-		Row programCountry = sheetEvent.getRow(ProgramCols.EVENT_COUNTRY.getRow());
+		Row programEventPlace = sheetEvent.getRow(ProgramCols.EVENT_PLACE
+				.getRow());
+		Row programEventDate = sheetEvent.getRow(ProgramCols.EVENT_DATE
+				.getRow());
+		Row programCountry = sheetEvent.getRow(ProgramCols.EVENT_COUNTRY
+				.getRow());
 		Row programState = sheetEvent.getRow(ProgramCols.EVENT_STATE.getRow());
 		Row programCity = sheetEvent.getRow(ProgramCols.EVENT_CITY.getRow());
-		Row programCoordinator = sheetEvent.getRow(ProgramCols.EVENT_COORDINATORNAME.getRow());
-		Row programCoordinatorMobile = sheetEvent.getRow(ProgramCols.EVENT_COORDINATOR_MOBILE.getRow());
-		Row programCoordinatorMail = sheetEvent.getRow(ProgramCols.EVENT_COORDINATOR_MAIL.getRow());
-		Row organizationName = sheetEvent.getRow(ProgramCols.ORGANIZATION_NAME.getRow());
-		Row orgContactPerson = sheetEvent.getRow(ProgramCols.ORGANIZATION_CONTACT_PERSON.getRow());
-		Row orgWebSite = sheetEvent.getRow(ProgramCols.ORGANIZATION_WEBSITE.getRow());
-		Row orgContactMailId = sheetEvent.getRow(ProgramCols.ORGANIZATION_CONTACT_MAILID.getRow());
-		Row orgContactMobile = sheetEvent.getRow(ProgramCols.ORGANIZATION_CONTACT_MOBILE.getRow());
-		
-		Row preceptorName = sheetEvent.getRow(ProgramCols.PRECEPTOR_NAME.getRow());
+		Row programCoordinator = sheetEvent
+				.getRow(ProgramCols.EVENT_COORDINATORNAME.getRow());
+		Row programCoordinatorMobile = sheetEvent
+				.getRow(ProgramCols.EVENT_COORDINATOR_MOBILE.getRow());
+		Row programCoordinatorMail = sheetEvent
+				.getRow(ProgramCols.EVENT_COORDINATOR_MAIL.getRow());
+		Row organizationName = sheetEvent.getRow(ProgramCols.ORGANIZATION_NAME
+				.getRow());
+		Row orgContactPerson = sheetEvent
+				.getRow(ProgramCols.ORGANIZATION_CONTACT_PERSON.getRow());
+		Row orgWebSite = sheetEvent.getRow(ProgramCols.ORGANIZATION_WEBSITE
+				.getRow());
+		Row orgContactMailId = sheetEvent
+				.getRow(ProgramCols.ORGANIZATION_CONTACT_MAILID.getRow());
+		Row orgContactMobile = sheetEvent
+				.getRow(ProgramCols.ORGANIZATION_CONTACT_MOBILE.getRow());
+
+		Row preceptorName = sheetEvent.getRow(ProgramCols.PRECEPTOR_NAME
+				.getRow());
 		Row preceptorId = sheetEvent.getRow(ProgramCols.PRECEPTOR_ID.getRow());
-		Row welcomeCardSignedBy = sheetEvent.getRow(ProgramCols.WELCOME_CARD_SIGNEDBY.getRow());
-		Row welcomeCardSignedID = sheetEvent.getRow(ProgramCols.WELCOME_CARD_SIGNER_ID.getRow());
-		
-		Row remarks = sheetEvent.getRow(ProgramCols.REMARKS.getRow()+1);
-		
-		
-		header.setEmail(validateNull(programCoordinatorMail.getCell(ProgramCols.EVENT_COORDINATOR_MAIL.getCell()+1)));
+		Row welcomeCardSignedBy = sheetEvent
+				.getRow(ProgramCols.WELCOME_CARD_SIGNEDBY.getRow());
+		Row welcomeCardSignedID = sheetEvent
+				.getRow(ProgramCols.WELCOME_CARD_SIGNER_ID.getRow());
+
+		Row remarks = sheetEvent.getRow(ProgramCols.REMARKS.getRow() + 1);
+
+		header.setEmail(validateNull(programCoordinatorMail
+				.getCell(ProgramCols.EVENT_COORDINATOR_MAIL.getCell() + 1)));
 		header.setChannelName(programEventRow.getCell(
 				ProgramCols.EVENT_TYPE.getCell() + 1).getStringCellValue());
-		header.setCenter(programEventPlace.getCell(ProgramCols.EVENT_PLACE.getCell()+1).getStringCellValue());
-		header.setCoordinatorName(validateNull(programCoordinator.getCell(ProgramCols.EVENT_COORDINATORNAME.getCell()+1)));
-		header.setInstituteName(organizationName.getCell(ProgramCols.ORGANIZATION_NAME.getCell()+1).toString());
-		header.setWebsite(validateNull(orgWebSite.getCell(ProgramCols.ORGANIZATION_WEBSITE.getCell()+1)));
-		header.setCountry(validateNull(programCountry.getCell(ProgramCols.EVENT_COUNTRY.getCell()+1)));
-		header.setState(validateNull(programState.getCell(ProgramCols.EVENT_STATE.getCell()+1)));
+		header.setCenter(programEventPlace.getCell(
+				ProgramCols.EVENT_PLACE.getCell() + 1).getStringCellValue());
+		header.setCoordinatorName(validateNull(programCoordinator
+				.getCell(ProgramCols.EVENT_COORDINATORNAME.getCell() + 1)));
+		header.setInstituteName(organizationName.getCell(
+				ProgramCols.ORGANIZATION_NAME.getCell() + 1).toString());
+		header.setWebsite(validateNull(orgWebSite
+				.getCell(ProgramCols.ORGANIZATION_WEBSITE.getCell() + 1)));
+		header.setCountry(validateNull(programCountry
+				.getCell(ProgramCols.EVENT_COUNTRY.getCell() + 1)));
+		header.setState(validateNull(programState
+				.getCell(ProgramCols.EVENT_STATE.getCell() + 1)));
 		populateStartDate(header, programEventDate);
-		
-		header.setOther(validateNull(programOther.getCell(ProgramCols.OTHER.getCell()+1)));
-		header.setEventCity(validateNull(programCity.getCell(ProgramCols.EVENT_CITY.getCell()+1)));
-		populateCoordnatorMobile(header,programCoordinatorMobile.getCell(ProgramCols.EVENT_COORDINATOR_MOBILE.getCell()+1));
-		populateOrgContactMobile(header,orgContactMobile.getCell(ProgramCols.ORGANIZATION_CONTACT_MOBILE.getCell()+1));
-		header.setOrgContactPerson(validateNull(orgContactPerson.getCell(ProgramCols.ORGANIZATION_CONTACT_PERSON.getCell()+1)));
-		
-		header.setOrgContactEmail(validateNull(orgContactMailId.getCell(ProgramCols.ORGANIZATION_CONTACT_MAILID.getCell()+1)));
-		header.setPreceptorName(validateNull(preceptorName.getCell(ProgramCols.PRECEPTOR_NAME.getCell()+1)));
-		header.setPreceptorId(validateNull(preceptorId.getCell(ProgramCols.PRECEPTOR_ID.getCell()+1)));
-		header.setWelcomeCardSignedBy(validateNull(welcomeCardSignedBy.getCell(ProgramCols.WELCOME_CARD_SIGNEDBY.getCell()+1)));
-		header.setWelcomeCardSignedID(validateNull(welcomeCardSignedID.getCell(ProgramCols.WELCOME_CARD_SIGNER_ID.getCell()+1)));
-		
-		header.setRemarks(validateNull(remarks.getCell(ProgramCols.REMARKS.getCell())));
+
+		header.setOther(validateNull(programOther.getCell(ProgramCols.OTHER
+				.getCell() + 1)));
+		header.setEventCity(validateNull(programCity
+				.getCell(ProgramCols.EVENT_CITY.getCell() + 1)));
+		populateCoordnatorMobile(
+				header,
+				programCoordinatorMobile
+						.getCell(ProgramCols.EVENT_COORDINATOR_MOBILE.getCell() + 1));
+		populateOrgContactMobile(header,
+				orgContactMobile
+						.getCell(ProgramCols.ORGANIZATION_CONTACT_MOBILE
+								.getCell() + 1));
+		header.setOrgContactPerson(validateNull(orgContactPerson
+				.getCell(ProgramCols.ORGANIZATION_CONTACT_PERSON.getCell() + 1)));
+
+		header.setOrgContactEmail(validateNull(orgContactMailId
+				.getCell(ProgramCols.ORGANIZATION_CONTACT_MAILID.getCell() + 1)));
+		header.setPreceptorName(validateNull(preceptorName
+				.getCell(ProgramCols.PRECEPTOR_NAME.getCell() + 1)));
+		header.setPreceptorId(validateNull(preceptorId
+				.getCell(ProgramCols.PRECEPTOR_ID.getCell() + 1)));
+		header.setWelcomeCardSignedBy(validateNull(welcomeCardSignedBy
+				.getCell(ProgramCols.WELCOME_CARD_SIGNEDBY.getCell() + 1)));
+		header.setWelcomeCardSignedID(validateNull(welcomeCardSignedID
+				.getCell(ProgramCols.WELCOME_CARD_SIGNER_ID.getCell() + 1)));
+
+		header.setRemarks(validateNull(remarks.getCell(ProgramCols.REMARKS
+				.getCell())));
 		return header;
 
 	}
+
 	/**
 	 * @param header
 	 * @param codateRow
 	 */
 	private void populateStartDate(ProgramHeaderTO header, Row codateRow) {
-		if (codateRow.getCell(ProgramCols.EVENT_DATE.getCell()+1) != null) {
-			String string = codateRow.getCell(ProgramCols.EVENT_DATE.getCell()+1).toString();
+		if (codateRow.getCell(ProgramCols.EVENT_DATE.getCell() + 1) != null) {
+			String string = codateRow.getCell(
+					ProgramCols.EVENT_DATE.getCell() + 1).toString();
 			SimpleDateFormat format = new SimpleDateFormat(DD_MMM_YYYY);
 			try {
 				Date date = format.parse(string);
@@ -136,7 +183,7 @@ public class ExcelDataExtractroV2 implements ExcelDataProcessor {
 		}
 
 	}
-	
+
 	/**
 	 * @param header
 	 * @param cellPhone
@@ -145,15 +192,15 @@ public class ExcelDataExtractroV2 implements ExcelDataProcessor {
 		if (cellPhone != null) {
 			try {
 				Double parseDouble = Double.parseDouble(cellPhone.toString());
-				header.setCoordinatorMobile(String.valueOf(parseDouble.longValue()));
+				header.setCoordinatorMobile(String.valueOf(parseDouble
+						.longValue()));
 			} catch (Exception e) {
 				header.setCoordinatorMobile(cellPhone.toString());
 			}
 
 		}
 	}
-	
-	
+
 	/**
 	 * @param header
 	 * @param cellPhone
@@ -162,7 +209,8 @@ public class ExcelDataExtractroV2 implements ExcelDataProcessor {
 		if (cellPhone != null) {
 			try {
 				Double parseDouble = Double.parseDouble(cellPhone.toString());
-				header.setOrgContactMobile(String.valueOf(parseDouble.longValue()));
+				header.setOrgContactMobile(String.valueOf(parseDouble
+						.longValue()));
 			} catch (Exception e) {
 				header.setOrgContactMobile(cellPhone.toString());
 			}
@@ -170,7 +218,6 @@ public class ExcelDataExtractroV2 implements ExcelDataProcessor {
 		}
 	}
 
-	
 	private String validateNull(Cell cell) {
 		if (cell != null) {
 			return cell.toString();
@@ -178,9 +225,8 @@ public class ExcelDataExtractroV2 implements ExcelDataProcessor {
 		return "";
 	}
 
-	
 	@Override
-	public List<SeekerAimsTO> buildParticipants() {
+	public List<SeekerAimsTO> buildParticipants() throws Exception {
 		boolean mark = false;
 		List<Row> participantRows = new ArrayList<Row>();
 		for (int i = 0; i < sheetParticipants.getLastRowNum(); i++) {
@@ -190,15 +236,19 @@ public class ExcelDataExtractroV2 implements ExcelDataProcessor {
 					participantRows.add(row);
 				}
 			}
-			if (row != null && row.getCell(ParticipantCols.NAME.getColumn()) != null) {
-				String string = row.getCell(ParticipantCols.NAME.getColumn()).toString();
+			if (row != null
+					&& row.getCell(ParticipantCols.NAME.getColumn()) != null) {
+				String string = row.getCell(ParticipantCols.NAME.getColumn())
+						.toString();
 				if (string.contains(ParticipantCols.NAME.getHeader())) {
 					mark = true;
 				}
 
 				if (mark) {
-					if (row == null || (row.getCell(ParticipantCols.NAME.getColumn()) == null)
-							|| row.getCell(ParticipantCols.NAME.getColumn()).toString().isEmpty()) {
+					if (row == null
+							|| (row.getCell(ParticipantCols.NAME.getColumn()) == null)
+							|| row.getCell(ParticipantCols.NAME.getColumn())
+									.toString().isEmpty()) {
 						mark = false;
 					}
 				}
@@ -207,15 +257,13 @@ public class ExcelDataExtractroV2 implements ExcelDataProcessor {
 		}
 		ProgramHeaderTO buildProgramDetails = buildProgramDetails();
 		List<SeekerAimsTO> processRows = processRows(participantRows);
-		for(SeekerAimsTO seekerAims:processRows){
+		for (SeekerAimsTO seekerAims : processRows) {
 			seekerAims.setCountry(buildProgramDetails.getCountry());
 		}
 		sLogger.info("Participant list:" + participantRows.size());
-        return processRows;
+		return processRows;
 	}
-	
-	
-	
+
 	/**
 	 * @param participantRows
 	 */
@@ -223,8 +271,9 @@ public class ExcelDataExtractroV2 implements ExcelDataProcessor {
 		List<SeekerAimsTO> aimsList = new ArrayList<SeekerAimsTO>();
 		for (Row row : participantRows) {
 			SeekerAimsTO buildParticipant = buildParticipant(row);
-			if(buildParticipant.getFirstName()!=null && !buildParticipant.getFirstName().isEmpty()){
-			aimsList.add(buildParticipant);
+			if (buildParticipant.getFirstName() != null
+					&& !buildParticipant.getFirstName().isEmpty()) {
+				aimsList.add(buildParticipant);
 			}
 		}
 		return aimsList;
@@ -245,7 +294,8 @@ public class ExcelDataExtractroV2 implements ExcelDataProcessor {
 		seekerTo.setEmail(validateNull(cellEmail));
 		Cell cellPhone = row.getCell(ParticipantCols.MOBILE.getColumn());
 		populatePhone(seekerTo, cellPhone);
-		Cell cellIntroduced = row.getCell(ParticipantCols.THIRD_SITTING.getColumn());
+		Cell cellIntroduced = row.getCell(ParticipantCols.THIRD_SITTING
+				.getColumn());
 		if (cellIntroduced.getStringCellValue() != null
 				&& !cellIntroduced.getStringCellValue().isEmpty()
 				&& cellIntroduced.getStringCellValue().contains("Y")) {
@@ -253,32 +303,36 @@ public class ExcelDataExtractroV2 implements ExcelDataProcessor {
 		}
 		Cell cellAge = row.getCell(ParticipantCols.AGE_GROUP.getColumn());
 		seekerTo.setAgeGroup(validateNull(cellAge));
-		
-		Cell cellBatchYear = row.getCell(ParticipantCols.BATCH_YEAR.getColumn());
+
+		Cell cellBatchYear = row
+				.getCell(ParticipantCols.BATCH_YEAR.getColumn());
 		seekerTo.setBatchOrYear(validateNull(cellBatchYear));
-		
-		
+
 		Cell cellGender = row.getCell(ParticipantCols.GENDER.getColumn());
 		seekerTo.setGender(validateNull(cellGender));
-		
-		Cell cellDepartment = row.getCell(ParticipantCols.DEPARTMENT.getColumn());
+
+		Cell cellDepartment = row.getCell(ParticipantCols.DEPARTMENT
+				.getColumn());
 		seekerTo.setDepartment(validateNull(cellDepartment));
-		
-		Cell cellPrefLang = row.getCell(ParticipantCols.PREF_LANGUAGE.getColumn());
+
+		Cell cellPrefLang = row.getCell(ParticipantCols.PREF_LANGUAGE
+				.getColumn());
 		seekerTo.setPreferredLanguageForCommunication(validateNull(cellPrefLang));
-		
-		Cell cellReceiveUpdates = row.getCell(ParticipantCols.RECEIVE_UPDATES.getColumn());
+
+		Cell cellReceiveUpdates = row.getCell(ParticipantCols.RECEIVE_UPDATES
+				.getColumn());
 		String recUpdates = validateNull(cellReceiveUpdates);
-		if("Y".equalsIgnoreCase(recUpdates.trim().toUpperCase())){
-		seekerTo.setReceiveUpddates(Boolean.TRUE);
+		if ("Y".equalsIgnoreCase(recUpdates.trim().toUpperCase())) {
+			seekerTo.setReceiveUpddates(Boolean.TRUE);
 		}
 		setWelcomeCardIssuedDate(row, seekerTo);
 		Cell cellOcc = row.getCell(ParticipantCols.PROFFESION.getColumn());
 		seekerTo.setOccupation(validateNull(cellOcc));
 		Cell cellRemarks = row.getCell(ParticipantCols.REMARKS.getColumn());
 		seekerTo.setRemarks(validateNull(cellRemarks));
-		
-		Cell cellWelcomeCardNo = row.getCell(ParticipantCols.WELCOME_CARD_NUMBER.getColumn());
+
+		Cell cellWelcomeCardNo = row
+				.getCell(ParticipantCols.WELCOME_CARD_NUMBER.getColumn());
 		seekerTo.setWelcomeCardNo(validateNull(cellWelcomeCardNo));
 		return seekerTo;
 	}
@@ -299,13 +353,13 @@ public class ExcelDataExtractroV2 implements ExcelDataProcessor {
 		}
 	}
 
-	
 	/**
 	 * @param row
 	 * @param seekerTo
 	 */
 	private void setWelcomeCardIssuedDate(Row row, SeekerAimsTO seekerTo) {
-		Cell welcomIssDate = row.getCell(ParticipantCols.WELCOME_CARD_ISSUE_DATE.getColumn());
+		Cell welcomIssDate = row
+				.getCell(ParticipantCols.WELCOME_CARD_ISSUE_DATE.getColumn());
 		if (welcomIssDate != null) {
 			String string = welcomIssDate.toString();
 			try {
@@ -316,6 +370,5 @@ public class ExcelDataExtractroV2 implements ExcelDataProcessor {
 			}
 		}
 	}
-
 
 }

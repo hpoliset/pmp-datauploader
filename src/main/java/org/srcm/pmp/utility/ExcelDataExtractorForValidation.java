@@ -57,17 +57,21 @@ public class ExcelDataExtractorForValidation implements ExcelDataValidator{
 	Workbook workbook;
 	Sheet sheet;
 
-	public ExcelDataExtractorForValidation(byte[] data, FILE_TYPE fileType) {
-		buildWorkBook(data, fileType);
+	public ExcelDataExtractorForValidation(byte[] data, String fileName) {
+		if (fileName.endsWith("xlsx"))
+			buildWorkBook(data, FileType.XLSX);
+		else if (fileName.endsWith("xls")) {
+			buildWorkBook(data, FileType.XLS);
+		}
 
 	}
 
-	private void buildWorkBook(byte[] data, FILE_TYPE fileType) {
+	private void buildWorkBook(byte[] data, FileType fileType) {
 		ByteArrayInputStream bs = new ByteArrayInputStream(data);
 		try {
-			if (fileType == FILE_TYPE.XLSX)
+			if (fileType == FileType.XLSX)
 				workbook = new XSSFWorkbook(bs);
-			else if (fileType == FILE_TYPE.XLS) {
+			else if (fileType == FileType.XLS) {
 				workbook = new HSSFWorkbook(bs);
 			}
 			sheet = workbook.getSheetAt(0);
@@ -245,17 +249,7 @@ public class ExcelDataExtractorForValidation implements ExcelDataValidator{
 			byte[] data = new byte[10000000];
 			fs.read(data);
 			fs.close();
-			ExcelDataExtractorForValidation transformer = null;
-			if (fileName.endsWith("xls")) {
-				transformer = new ExcelDataExtractorForValidation(data,
-						FILE_TYPE.XLS);
-			} else if (fileName.endsWith("xlsx")) {
-				transformer = new ExcelDataExtractorForValidation(data,
-						FILE_TYPE.XLSX);
-			} else {
-				sLogger.info("Invalid File (xls or xlsx)");
-				return false;
-			}
+			ExcelDataExtractorForValidation transformer = new ExcelDataExtractorForValidation(data, fileName);
 			boolean validateContent = transformer
 					.validateContent(loggerMessage);
 			loggerMessage.append(validateContent);

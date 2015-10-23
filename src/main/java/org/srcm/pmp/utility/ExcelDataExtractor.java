@@ -85,8 +85,12 @@ public class ExcelDataExtractor implements ExcelDataProcessor {
 	 * @param data
 	 * @param fileType
 	 */
-	public ExcelDataExtractor(byte[] data, FILE_TYPE fileType) {
-		buildWorkBook(data, fileType);
+	public ExcelDataExtractor(byte[] data, String fileName) {
+		if (fileName.endsWith("xlsx"))
+			buildWorkBook(data, FileType.XLSX);
+		else if (fileName.endsWith("xls")) {
+			buildWorkBook(data, FileType.XLS);
+		}
 
 	}
 
@@ -94,12 +98,12 @@ public class ExcelDataExtractor implements ExcelDataProcessor {
 	 * @param data
 	 * @param fileType
 	 */
-	private void buildWorkBook(byte[] data, FILE_TYPE fileType) {
+	private void buildWorkBook(byte[] data, FileType fileType) {
 		ByteArrayInputStream bs = new ByteArrayInputStream(data);
 		try {
-			if (fileType == FILE_TYPE.XLSX)
+			if (fileType == FileType.XLSX)
 				workbook = new XSSFWorkbook(bs);
-			else if (fileType == FILE_TYPE.XLS) {
+			else if (fileType == FileType.XLS) {
 				workbook = new HSSFWorkbook(bs);
 			}
 			sheet = workbook.getSheetAt(0);
@@ -298,15 +302,7 @@ public class ExcelDataExtractor implements ExcelDataProcessor {
 			byte[] data = new byte[10000000];
 			fs.read(data);
 			fs.close();
-			ExcelDataExtractor transformer = null;
-			if (fileName.endsWith("xls")) {
-				transformer = new ExcelDataExtractor(data, FILE_TYPE.XLS);
-			} else if (fileName.endsWith("xlsx")) {
-				transformer = new ExcelDataExtractor(data, FILE_TYPE.XLSX);
-			} else {
-				System.out.println("Invalid File (xls or xlsx)");
-				System.exit(0);
-			}
+			ExcelDataExtractor transformer = new ExcelDataExtractor(data, fileName);
 			ProgramHeaderTO buildHeader = transformer.buildProgramDetails();
 			List<SeekerAimsTO> buildParticipants = transformer.buildParticipants();
 			
@@ -317,4 +313,6 @@ public class ExcelDataExtractor implements ExcelDataProcessor {
 		}
 
 	}
+
+	
 }

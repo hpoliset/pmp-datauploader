@@ -18,9 +18,9 @@ import org.srcm.pmp.domain.SeekerAims;
 import org.srcm.pmp.to.ProgramHeaderTO;
 import org.srcm.pmp.to.SeekerAimsTO;
 import org.srcm.pmp.transformers.ProgramSeekerTOTransformer;
-import org.srcm.pmp.utility.ExcelDataExtractor;
-import org.srcm.pmp.utility.ExcelDataExtractorForValidation;
-import org.srcm.pmp.utility.ExcelDataExtractor.FILE_TYPE;
+import org.srcm.pmp.utility.ExcelDataFactory;
+import org.srcm.pmp.utility.ExcelDataProcessor;
+import org.srcm.pmp.utility.ExcelDataValidator;
 
 /**
  * @author MASTER
@@ -37,20 +37,13 @@ public class ParticipantService {
 
 	/**
 	 * @param participants
+	 * @throws Exception 
 	 */
 	@Transactional
-	public void persistSeekerDetailsFromExcel(CommonsMultipartFile aFile) {
-		ExcelDataExtractor transformer = null;
-		ExcelDataExtractorForValidation transformerValid = null;
-		
-		if((aFile.getFileItem().getName().endsWith("xlsx"))){
-			transformer = new ExcelDataExtractor(aFile.getBytes(),FILE_TYPE.XLSX);
-			transformerValid = new ExcelDataExtractorForValidation(aFile.getBytes(),ExcelDataExtractorForValidation.FILE_TYPE.XLSX);
-		}else if(aFile.getFileItem().getName().endsWith("xls")){
-			transformer = new ExcelDataExtractor(aFile.getBytes(),FILE_TYPE.XLS);
-			transformerValid = new ExcelDataExtractorForValidation(aFile.getBytes(),ExcelDataExtractorForValidation.FILE_TYPE.XLS);
-		}
-		
+	public void persistSeekerDetailsFromExcel(CommonsMultipartFile file) throws Exception {
+		ExcelDataFactory factory = ExcelDataFactory.getInstance();
+		ExcelDataProcessor transformer = factory.getExcelDataExtractor(file);
+		ExcelDataValidator transformerValid = factory.getExcelDataValidator(file);
 		StringBuffer loggerMessage = new StringBuffer();
 		if (transformerValid.validateContent(loggerMessage)) {
 			List<SeekerAimsTO> aimsTOs = transformer.buildParticipants();

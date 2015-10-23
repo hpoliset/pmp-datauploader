@@ -13,12 +13,15 @@ public interface ExcelDataProcessor {
 
 	/**
 	 * @return
+	 * @throws Exception 
 	 */
-	public ProgramHeaderTO buildProgramDetails();
+	public ProgramHeaderTO buildProgramDetails() throws Exception;
 	
 	/**
 	 * @return
 	 */
-	public List<SeekerAimsTO> buildParticipants();
+	public List<SeekerAimsTO> buildParticipants() throws Exception;
+	
+	
 	
 }

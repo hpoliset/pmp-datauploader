@@ -5,7 +5,7 @@ package org.srcm.pmp.utility;
 
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.srcm.pmp.utility.v2.ExcelDataExtractorForValidationV2;
-import org.srcm.pmp.utility.v2.ExcelDataExtractroV2;
+import org.srcm.pmp.utility.v2.ExcelDataExtractorV2;
 import org.srcm.pmp.utility.v2.Version;
 import org.srcm.pmp.utility.v2.VersionValidator;
 
@@ -36,7 +36,7 @@ public class ExcelDataFactory {
 			transformer = new ExcelDataExtractor(file.getBytes(), file
 					.getFileItem().getName());
 		} else if (vValidator.validateVersion() == Version.V2) {
-			transformer = new ExcelDataExtractroV2(file.getBytes(), file
+			transformer = new ExcelDataExtractorV2(file.getBytes(), file
 					.getFileItem().getName());
 		}
 		return transformer;

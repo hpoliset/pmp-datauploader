@@ -4,6 +4,7 @@
 package org.srcm.pmp.utility.v2;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,7 +30,7 @@ import org.srcm.pmp.utility.FileType;
  * @author MASTER
  *
  */
-public class ExcelDataExtractroV2 implements ExcelDataProcessor {
+public class ExcelDataExtractorV2 implements ExcelDataProcessor {
 	private static final String DD_MMM_YYYY = "dd-MMM-yyyy";
 	private SimpleDateFormat dateFormat = new SimpleDateFormat(DD_MMM_YYYY);
 	private static Logger sLogger = LoggerFactory
@@ -38,8 +39,8 @@ public class ExcelDataExtractroV2 implements ExcelDataProcessor {
 	private Sheet sheetEvent;
 	private Sheet sheetParticipants;
 
-	public ExcelDataExtractroV2(byte[] data, String fileName) {
-		if (fileName.endsWith("xlsx"))
+	public ExcelDataExtractorV2(byte[] data, String fileName) {
+		if (fileName.endsWith("xlsx")||fileName.endsWith("xlsm"))
 			buildWorkBook(data, FileType.XLSX);
 		else if (fileName.endsWith("xls")) {
 			buildWorkBook(data, FileType.XLS);
@@ -370,5 +371,29 @@ public class ExcelDataExtractroV2 implements ExcelDataProcessor {
 			}
 		}
 	}
+	
+	public static void main(String[] args) {
+		FileInputStream fs;
+		try {
+			String fileName = "E:\\validatedExcels\\HFN-I-Renigunta-Tirupati-AP-MRKrishna.xlsx";
+			fs = new FileInputStream(fileName);
+			byte[] data = new byte[10000000];
+			fs.read(data);
+			fs.close();
+			ExcelDataExtractorV2 transformer = new ExcelDataExtractorV2(data, fileName);
+			ProgramHeaderTO buildHeader = transformer.buildProgramDetails();
+			List<SeekerAimsTO> buildParticipants = transformer.buildParticipants();
+			
+			System.out.println(buildHeader);
+			System.out.println(buildParticipants);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
 
 }

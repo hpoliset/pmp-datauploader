@@ -27,7 +27,7 @@ import org.srcm.pmp.to.ProgramHeaderValidator;
  * @author MASTER
  *
  */
-public class ExcelDataExtractorForValidation {
+public class ExcelDataExtractorForValidation implements ExcelDataValidator{
 
 	private static final String PROGRAM_NAME = "Program Name";
 

@@ -27,7 +27,7 @@ import org.srcm.pmp.to.SeekerAimsTO;
  * @author MASTER
  *
  */
-public class ExcelDataExtractor {
+public class ExcelDataExtractor implements ExcelDataProcessor {
 
 	private static final String YES = "yes";
 	private static final String DD_MMM_YYYY = "dd-MMM-yyyy";

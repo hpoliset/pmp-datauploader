@@ -26,7 +26,7 @@ public class VersionValidator {
 	private static Logger sLogger = LoggerFactory.getLogger(ExcelDataExtractor.class.getName());
 
 	public VersionValidator(byte[] data, String fileName) {
-		if (fileName.endsWith("xlsx"))
+		if (fileName.endsWith("xlsx")||fileName.endsWith("xlsm"))
 			buildWorkBook(data, FileType.XLSX);
 		else if (fileName.endsWith("xls")) {
 			buildWorkBook(data, FileType.XLS);

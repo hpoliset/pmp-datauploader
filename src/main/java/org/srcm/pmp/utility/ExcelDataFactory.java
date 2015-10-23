@@ -3,7 +3,6 @@
  */
 package org.srcm.pmp.utility;
 
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.srcm.pmp.utility.v2.ExcelDataExtractorForValidationV2;
 import org.srcm.pmp.utility.v2.ExcelDataExtractorV2;
 import org.srcm.pmp.utility.v2.Version;
@@ -28,16 +27,13 @@ public class ExcelDataFactory {
 	 * @param file
 	 * @return
 	 */
-	public ExcelDataProcessor getExcelDataExtractor(CommonsMultipartFile file) {
-		VersionValidator vValidator = new VersionValidator(file.getBytes(),
-				file.getFileItem().getName());
+	public ExcelDataProcessor getExcelDataExtractor(byte[] data, String fileName) {
+		VersionValidator vValidator = new VersionValidator(data, fileName);
 		ExcelDataProcessor transformer = new InValidExcelDataExtractor();
 		if (vValidator.validateVersion() == Version.V1) {
-			transformer = new ExcelDataExtractor(file.getBytes(), file
-					.getFileItem().getName());
+			transformer = new ExcelDataExtractor(data, fileName);
 		} else if (vValidator.validateVersion() == Version.V2) {
-			transformer = new ExcelDataExtractorV2(file.getBytes(), file
-					.getFileItem().getName());
+			transformer = new ExcelDataExtractorV2(data, fileName);
 		}
 		return transformer;
 
@@ -47,16 +43,15 @@ public class ExcelDataFactory {
 	 * @param file
 	 * @return
 	 */
-	public ExcelDataValidator getExcelDataValidator(CommonsMultipartFile file) {
-		VersionValidator vValidator = new VersionValidator(file.getBytes(),
-				file.getFileItem().getName());
+	public ExcelDataValidator getExcelDataValidator(byte[] data, String fileName) {
+		VersionValidator vValidator = new VersionValidator(data, fileName);
 		ExcelDataValidator transformerValid = new InValidExcelDataValidator();
 		if (vValidator.validateVersion() == Version.V1) {
-			transformerValid = new ExcelDataExtractorForValidation(
-					file.getBytes(), file.getFileItem().getName());
+			transformerValid = new ExcelDataExtractorForValidation(data,
+					fileName);
 		} else if (vValidator.validateVersion() == Version.V2) {
-			transformerValid = new ExcelDataExtractorForValidationV2(
-					file.getBytes(), file.getFileItem().getName());
+			transformerValid = new ExcelDataExtractorForValidationV2(data,
+					fileName);
 		}
 		return transformerValid;
 

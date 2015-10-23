@@ -15,12 +15,12 @@ public enum ProgramCols {
 			"Organisation Name*", 0, 9), ORGANIZATION_CONTACT_PERSON(
 			"Organisation Contact Person*", 2, 9), ORGANIZATION_WEBSITE(
 			"Organisation Website", 0, 10), ORGANIZATION_CONTACT_MAILID(
-			"Organisation Contact Email ID*", 0, 10), ORGANIZATION_CONTACT_MOBILE(
-			"Organisation Contact Mobile*", 2, 12), PRECEPTOR_NAME(
+			"Organisation Contact Email ID*", 2, 10), ORGANIZATION_CONTACT_MOBILE(
+			"Organisation Contact Mobile*", 2, 11), PRECEPTOR_NAME(
 			"Preceptor Name*", 0, 13), WELCOME_CARD_SIGNEDBY(
 			"Welcome Card Signed By", 2, 13), PRECEPTOR_ID("Preceptor ID*", 0,
 			14), WELCOME_CARD_SIGNER_ID("Welcome Card Signer's ID", 2, 14), REMARKS(
-			"Remarks", 0, 16);
+			"Remarks:", 0, 16);
 	private String header;
 	private int cell;
 	private int row;

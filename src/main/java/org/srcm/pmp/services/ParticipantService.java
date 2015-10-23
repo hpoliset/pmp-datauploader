@@ -42,8 +42,8 @@ public class ParticipantService {
 	@Transactional
 	public void persistSeekerDetailsFromExcel(CommonsMultipartFile file) throws Exception {
 		ExcelDataFactory factory = ExcelDataFactory.getInstance();
-		ExcelDataProcessor transformer = factory.getExcelDataExtractor(file);
-		ExcelDataValidator transformerValid = factory.getExcelDataValidator(file);
+		ExcelDataProcessor transformer = factory.getExcelDataExtractor(file.getBytes(),file.getFileItem().getName());
+		ExcelDataValidator transformerValid = factory.getExcelDataValidator(file.getBytes(),file.getFileItem().getName());
 		StringBuffer loggerMessage = new StringBuffer();
 		if (transformerValid.validateContent(loggerMessage)) {
 			List<SeekerAimsTO> aimsTOs = transformer.buildParticipants();

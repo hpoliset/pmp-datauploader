@@ -4,6 +4,7 @@
 package org.srcm.pmp.utility.v2;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,7 +36,7 @@ public class ExcelDataExtractorForValidationV2 implements ExcelDataValidator {
 			.getLogger(ExcelDataExtractorForValidationV2.class.getName());
 
 	public ExcelDataExtractorForValidationV2(byte[] data, String fileName) {
-		if (fileName.endsWith("xlsx"))
+		if (fileName.endsWith("xlsx")||fileName.endsWith("xlsm"))
 			buildWorkBook(data, FileType.XLSX);
 		else if (fileName.endsWith("xls")) {
 			buildWorkBook(data, FileType.XLS);
@@ -183,5 +184,37 @@ public class ExcelDataExtractorForValidationV2 implements ExcelDataValidator {
 		}
 
 	}
+	
+	/**
+	 * @param arg
+	 * @param loggerMessage
+	 * @return
+	 */
+	public static boolean validateHeartfulnessExcelFile(String arg,
+			StringBuffer loggerMessage) {
+
+		FileInputStream fs;
+		try {
+			String fileName = arg;
+			if (fileName == null) {
+				fileName = "E:\\validatedExcels\\HFN-Form-003-Participant-Details-Sheet-India-v2.1.xlsm";
+			}
+			
+
+			fs = new FileInputStream(fileName);
+			byte[] data = new byte[10000000];
+			fs.read(data);
+			fs.close();
+			ExcelDataExtractorForValidationV2 transformer = new ExcelDataExtractorForValidationV2(data, fileName);
+			boolean validateContent = transformer
+					.validateContent(loggerMessage);
+			loggerMessage.append(validateContent);
+			return validateContent;
+		} catch (IOException e) {
+			sLogger.error(e.getMessage());
+		}
+		return true;
+	}
+
 
 }

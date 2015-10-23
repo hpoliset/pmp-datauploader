@@ -294,17 +294,24 @@ public class SeekerAimsTO implements TransferObject {
 	 */
 	@Override
 	public String toString() {
-		return "[seekerID=" + seekerID + "\n, abhyasiID="
-				+ abhyasiID + "\n, addressLine1=" + addressLine1
-				+ "\n, addressLine2=" + addressLine2 + "\n, city=" + city
-				+ "\n, country=" + country + "\n, email=" + email + "\n, firstName="
-				+ firstName + "\n, gender=" + gender + "\n, idCardNum=" + idCardNum
-				+ "\n, language=" + language + "\n, introducedRawDate="
-				+ introducedRawDate + "\n, lastName=" + lastName
-				+ "\n, phoneMobile=" + phoneMobile + "\n, occupation=" + occupation
-				+ "\n, remarks=" + remarks + "\n, state=" + state + "\n, introduced="
-				+ introduced + "\n, introducedDate=" + introducedDate
-				+ "\n, introducedBy=" + introducedBy + "]";
+		return "SeekerAimsTO [seekerID=" + seekerID + ", abhyasiID="
+				+ abhyasiID + ", addressLine1=" + addressLine1
+				+ ", addressLine2=" + addressLine2 + ", city=" + city
+				+ ", country=" + country + ", email=" + email + ", firstName="
+				+ firstName + ", idCardNum=" + idCardNum + ", language="
+				+ language + ", introducedRawDate=" + introducedRawDate
+				+ ", welcomeCardIssuedDate=" + welcomeCardIssuedDate
+				+ ", welcomeCardIssuedRawDate=" + welcomeCardIssuedRawDate
+				+ ", department=" + department + ", receiveUpddates="
+				+ receiveUpddates + ", ageGroup=" + ageGroup
+				+ ", preferredLanguageForCommunication="
+				+ preferredLanguageForCommunication + ", batchOrYear="
+				+ batchOrYear + ", welcomeCardNo=" + welcomeCardNo
+				+ ", gender=" + gender + ", lastName=" + lastName
+				+ ", phoneMobile=" + phoneMobile + ", occupation=" + occupation
+				+ ", remarks=" + remarks + ", state=" + state + ", introduced="
+				+ introduced + ", introducedDate=" + introducedDate
+				+ ", introducedBy=" + introducedBy + "]";
 	}
 	/**
 	 * @return the phoneMobile

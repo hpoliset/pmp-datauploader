@@ -39,14 +39,29 @@ package org.srcm.pmp.ui;
  * nuclear facility.
  */
 
-import org.srcm.pmp.utility.ExcelDataExtractorForValidation;
-
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.srcm.pmp.utility.ExcelDataFactory;
+import org.srcm.pmp.utility.ExcelDataValidator;
 
 /*
  * SwingFileChooserDemo.java is a 1.4 application that uses these files:
@@ -56,6 +71,9 @@ public class ExcelValidatorFrame extends JPanel implements ActionListener {
     /**
 	 * 
 	 */
+	private static Logger sLogger = LoggerFactory
+			.getLogger(ExcelValidatorFrame.class.getName());
+
 	private static final long serialVersionUID = 2644511633444020426L;
 
 	static private final String newline = "\n";
@@ -116,8 +134,7 @@ public class ExcelValidatorFrame extends JPanel implements ActionListener {
                 //This is where a real application would open the file.
                 log.append("Opening: " + selectedFile.getAbsolutePath() + "." + newline);
                 StringBuffer messageBuffer = new StringBuffer();
-                boolean isValid = ExcelDataExtractorForValidation.
-                        validateHeartfulnessExcelFile(selectedFile.getAbsolutePath(), messageBuffer);
+                boolean isValid = validateHeartfulnessExcelFile(selectedFile.getAbsolutePath(), messageBuffer);
                 log.append(messageBuffer.toString());
 
                 JOptionPane.showMessageDialog(this, isValid ? "Valid Excel file" : "Not a valid Excel file");
@@ -128,6 +145,35 @@ public class ExcelValidatorFrame extends JPanel implements ActionListener {
         }
 
     }
+    
+	public static boolean validateHeartfulnessExcelFile(String arg,
+			StringBuffer loggerMessage) {
+
+		FileInputStream fs;
+		try {
+			String fileName = arg;
+			if (fileName == null) {
+				String message = "Please provide valid file name.";
+				loggerMessage.append(message + "\n");
+				sLogger.info(message);
+				return false;
+			}
+
+			fs = new FileInputStream(fileName);
+			byte[] data = new byte[10000000];
+			fs.read(data);
+			fs.close();
+			ExcelDataFactory instance = ExcelDataFactory.getInstance();
+			ExcelDataValidator transformer = instance.getExcelDataValidator(data, fileName);
+			boolean validateContent = transformer
+					.validateContent(loggerMessage);
+			loggerMessage.append(validateContent);
+			return validateContent;
+		} catch (IOException e) {
+			sLogger.error(e.getMessage());
+		}
+		return true;
+	}
 
     /** Returns an ImageIcon, or null if the path was invalid. */
     protected static ImageIcon createImageIcon(String path) {

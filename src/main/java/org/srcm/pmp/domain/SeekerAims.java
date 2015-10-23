@@ -34,7 +34,7 @@ public class SeekerAims implements java.io.Serializable {
 	private String middleName;
 	private String email;
 	private String phoneMobile;
-	private Integer gender;
+	private String gender;
 	private Date dateOfBirth;
 	private Date dateOfRegistration;
 	private String abhyasiId;
@@ -63,7 +63,7 @@ public class SeekerAims implements java.io.Serializable {
 	}
 
 	public SeekerAims(String firstName, String lastName, String middleName, String email,
-			String phoneMobile, Integer gender, Date dateOfBirth, Date dateOfRegistration, String abhyasiId,
+			String phoneMobile, String gender, Date dateOfBirth, Date dateOfRegistration, String abhyasiId,
 			Boolean status, String addressLine1, String addressLine2, String city, String state, String country,
 			String occupation, String remarks, String idCardNum, String language, String syncStatus, Boolean introduced,
 			Date introducedDate, String introducedBy) {
@@ -161,11 +161,11 @@ public class SeekerAims implements java.io.Serializable {
 	}
 
 	@Column(name = "Gender")
-	public Integer getGender() {
+	public String getGender() {
 		return this.gender;
 	}
 
-	public void setGender(Integer gender) {
+	public void setGender(String gender) {
 		this.gender = gender;
 	}
 

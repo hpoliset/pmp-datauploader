@@ -19,7 +19,150 @@ public class ProgramHeaderTO implements Serializable {
 	  private Date programStartDate;
 	  private String programRawStartDate;
 	  private String state;
+	  private String other;
+	  private String eventCity;
+	  private String coordinatorMobile;
+	  private String orgContactPerson;
+	  private String preceptorName;
+	  private String preceptorId;
+	  private String welcomeCardSignedBy;
+	  private String welcomeCardSignedID;
+	  private String remarks;
+	  private String orgContactEmail;
+	  private String orgContactMobile;
 	  /**
+	 * @return the other
+	 */
+	public String getOther() {
+		return other;
+	}
+	/**
+	 * @param other the other to set
+	 */
+	public void setOther(String other) {
+		this.other = other;
+	}
+	/**
+	 * @return the eventCity
+	 */
+	public String getEventCity() {
+		return eventCity;
+	}
+	/**
+	 * @param eventCity the eventCity to set
+	 */
+	public void setEventCity(String eventCity) {
+		this.eventCity = eventCity;
+	}
+	/**
+	 * @return the coordinatorMobile
+	 */
+	public String getCoordinatorMobile() {
+		return coordinatorMobile;
+	}
+	/**
+	 * @param coordinatorMobile the coordinatorMobile to set
+	 */
+	public void setCoordinatorMobile(String coordinatorMobile) {
+		this.coordinatorMobile = coordinatorMobile;
+	}
+	/**
+	 * @return the orgContactPerson
+	 */
+	public String getOrgContactPerson() {
+		return orgContactPerson;
+	}
+	/**
+	 * @param orgContactPerson the orgContactPerson to set
+	 */
+	public void setOrgContactPerson(String orgContactPerson) {
+		this.orgContactPerson = orgContactPerson;
+	}
+	/**
+	 * @return the preceptorName
+	 */
+	public String getPreceptorName() {
+		return preceptorName;
+	}
+	/**
+	 * @param preceptorName the preceptorName to set
+	 */
+	public void setPreceptorName(String preceptorName) {
+		this.preceptorName = preceptorName;
+	}
+	/**
+	 * @return the preceptorId
+	 */
+	public String getPreceptorId() {
+		return preceptorId;
+	}
+	/**
+	 * @param preceptorId the preceptorId to set
+	 */
+	public void setPreceptorId(String preceptorId) {
+		this.preceptorId = preceptorId;
+	}
+	/**
+	 * @return the welcomeCardSignedBy
+	 */
+	public String getWelcomeCardSignedBy() {
+		return welcomeCardSignedBy;
+	}
+	/**
+	 * @param welcomeCardSignedBy the welcomeCardSignedBy to set
+	 */
+	public void setWelcomeCardSignedBy(String welcomeCardSignedBy) {
+		this.welcomeCardSignedBy = welcomeCardSignedBy;
+	}
+	/**
+	 * @return the welcomeCardSignedID
+	 */
+	public String getWelcomeCardSignedID() {
+		return welcomeCardSignedID;
+	}
+	/**
+	 * @param welcomeCardSignedID the welcomeCardSignedID to set
+	 */
+	public void setWelcomeCardSignedID(String welcomeCardSignedID) {
+		this.welcomeCardSignedID = welcomeCardSignedID;
+	}
+	/**
+	 * @return the remarks
+	 */
+	public String getRemarks() {
+		return remarks;
+	}
+	/**
+	 * @param remarks the remarks to set
+	 */
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+	/**
+	 * @return the orgContactEmail
+	 */
+	public String getOrgContactEmail() {
+		return orgContactEmail;
+	}
+	/**
+	 * @param orgContactEmail the orgContactEmail to set
+	 */
+	public void setOrgContactEmail(String orgContactEmail) {
+		this.orgContactEmail = orgContactEmail;
+	}
+	/**
+	 * @return the orgContactMobile
+	 */
+	public String getOrgContactMobile() {
+		return orgContactMobile;
+	}
+	/**
+	 * @param orgContactMobile the orgContactMobile to set
+	 */
+	public void setOrgContactMobile(String orgContactMobile) {
+		this.orgContactMobile = orgContactMobile;
+	}
+	/**
 	 * @return the programRawStartDate
 	 */
 	public String getProgramRawStartDate() {

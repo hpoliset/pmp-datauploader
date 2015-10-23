@@ -23,10 +23,116 @@ public class SeekerAimsTO implements TransferObject {
 	private String country;
 	private String email;
 	private String firstName;
-	private int gender;
 	private String idCardNum;
 	private String language;
 	private String introducedRawDate;
+	private Date welcomeCardIssuedDate;
+	private String welcomeCardIssuedRawDate;
+	private String department;
+	private boolean receiveUpddates;
+	private String ageGroup;
+	private String preferredLanguageForCommunication;
+	private String batchOrYear;
+	private String welcomeCardNo;
+	/**
+	 * @return the welcomeCardNo
+	 */
+	public String getWelcomeCardNo() {
+		return welcomeCardNo;
+	}
+	/**
+	 * @param welcomeCardNo the welcomeCardNo to set
+	 */
+	public void setWelcomeCardNo(String welcomeCardNo) {
+		this.welcomeCardNo = welcomeCardNo;
+	}
+	/**
+	 * @return the department
+	 */
+	public String getDepartment() {
+		return department;
+	}
+	/**
+	 * @param department the department to set
+	 */
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+	/**
+	 * @return the receiveUpddates
+	 */
+	public boolean isReceiveUpddates() {
+		return receiveUpddates;
+	}
+	/**
+	 * @param receiveUpddates the receiveUpddates to set
+	 */
+	public void setReceiveUpddates(boolean receiveUpddates) {
+		this.receiveUpddates = receiveUpddates;
+	}
+	/**
+	 * @return the ageGroup
+	 */
+	public String getAgeGroup() {
+		return ageGroup;
+	}
+	/**
+	 * @param ageGroup the ageGroup to set
+	 */
+	public void setAgeGroup(String ageGroup) {
+		this.ageGroup = ageGroup;
+	}
+	/**
+	 * @return the preferredLanguageForCommunication
+	 */
+	public String getPreferredLanguageForCommunication() {
+		return preferredLanguageForCommunication;
+	}
+	/**
+	 * @param preferredLanguageForCommunication the preferredLanguageForCommunication to set
+	 */
+	public void setPreferredLanguageForCommunication(
+			String preferredLanguageForCommunication) {
+		this.preferredLanguageForCommunication = preferredLanguageForCommunication;
+	}
+	/**
+	 * @return the batchOrYear
+	 */
+	public String getBatchOrYear() {
+		return batchOrYear;
+	}
+	/**
+	 * @param batchOrYear the batchOrYear to set
+	 */
+	public void setBatchOrYear(String batchOrYear) {
+		this.batchOrYear = batchOrYear;
+	}
+	private String gender;
+	
+	/**
+	 * @return the welcomeCardIssuedDate
+	 */
+	public Date getWelcomeCardIssuedDate() {
+		return welcomeCardIssuedDate;
+	}
+	/**
+	 * @param welcomeCardIssuedDate the welcomeCardIssuedDate to set
+	 */
+	public void setWelcomeCardIssuedDate(Date welcomeCardIssuedDate) {
+		this.welcomeCardIssuedDate = welcomeCardIssuedDate;
+	}
+	/**
+	 * @return the welcomeCardIssuedRawDate
+	 */
+	public String getWelcomeCardIssuedRawDate() {
+		return welcomeCardIssuedRawDate;
+	}
+	/**
+	 * @param welcomeCardIssuedRawDate the welcomeCardIssuedRawDate to set
+	 */
+	public void setWelcomeCardIssuedRawDate(String welcomeCardIssuedRawDate) {
+		this.welcomeCardIssuedRawDate = welcomeCardIssuedRawDate;
+	}
 	/**
 	 * @return the introducedRawDate
 	 */
@@ -138,13 +244,13 @@ public class SeekerAimsTO implements TransferObject {
 	/**
 	 * @return the gender
 	 */
-	public int getGender() {
+	public String getGender() {
 		return gender;
 	}
 	/**
 	 * @param gender the gender to set
 	 */
-	public void setGender(int gender) {
+	public void setGender(String gender) {
 		this.gender = gender;
 	}
 	/**
